@@ -26,9 +26,6 @@
 /* Define to 1 if // is a file system root distinct from /. */
 #undef DOUBLE_SLASH_IS_DISTINCT_ROOT
 
-/* Define as good substitute value for EILSEQ. */
-#undef EILSEQ
-
 /* Define to 1 to enable a few rarely used encodings. */
 #define ENABLE_EXTRA 1
 

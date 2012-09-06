@@ -57,12 +57,6 @@ typedef void* iconv_t;
 
 /* Get errno declaration and values. */
 #include <errno.h>
-/* Some systems, like SunOS 4, don't have EILSEQ. Some systems, like BSD/OS,
-   have EILSEQ in a different header.  On these systems, define EILSEQ
-   ourselves. */
-#ifndef EILSEQ
-#define EILSEQ @EILSEQ@
-#endif
 
 
 #ifdef __cplusplus

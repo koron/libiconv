@@ -122,7 +122,7 @@ utf8_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n) /* n == 0 is accep
     case 4: r[3] = 0x80 | (wc & 0x3f); wc = wc >> 6; wc |= 0x10000;
     case 3: r[2] = 0x80 | (wc & 0x3f); wc = wc >> 6; wc |= 0x800;
     case 2: r[1] = 0x80 | (wc & 0x3f); wc = wc >> 6; wc |= 0xc0;
-    case 1: r[0] = wc;
+    case 1: r[0] = (unsigned char)wc;
   }
   return count;
 }
