@@ -110,7 +110,7 @@ active:
     state_t base64state = state;
     unsigned int kmax = 2; /* number of payload bytes to read */
     unsigned int k = 0; /* number of payload bytes already read */
-    unsigned int base64count = 0; /* number of base64 bytes already read */
+    int base64count = 0; /* number of base64 bytes already read */
     for (;;) {
       unsigned char c = *s;
       unsigned int i;
@@ -246,13 +246,13 @@ active:
         return RET_TOOSMALL;
       if ((state & 3) >= 2) {
         unsigned int i = state & -4;
-        unsigned char c;
+        unsigned char c = '\0';
         if (i < 26)
-          c = i+'A';
+          c = (unsigned char)(i+'A');
         else if (i < 52)
-          c = i-26+'a';
+          c = (unsigned char)(i-26+'a');
         else if (i < 62)
-          c = i-52+'0';
+          c = (unsigned char)(i-52+'0');
         else if (i == 62)
           c = '+';
         else if (i == 63)
@@ -284,19 +284,19 @@ active:
         return RET_TOOSMALL;
       for (;;) {
         unsigned int i;
-        unsigned char c;
+        unsigned char c = '\0';
         switch (state & 3) {
           case 0: /* inside base64, 6 bits known for 4th byte */
             c = (state & -4) >> 2; state = 1; break;
           case 1: /* inside base64, no pending bits */
             i = (wc >> (8 * --k)) & 0xff;
-            c = i >> 2; state = ((i & 3) << 4) | 2; break;
+            c = (unsigned char)(i >> 2); state = ((i & 3) << 4) | 2; break;
           case 2: /* inside base64, 2 bits known for 2nd byte */
             i = (wc >> (8 * --k)) & 0xff;
-            c = (state & -4) | (i >> 4); state = ((i & 15) << 2) | 3; break;
+            c = (unsigned char)((state & -4) | (i >> 4)); state = ((i & 15) << 2) | 3; break;
           case 3: /* inside base64, 4 bits known for 3rd byte */
             i = (wc >> (8 * --k)) & 0xff;
-            c = (state & -4) | (i >> 6); state = ((i & 63) << 2) | 0; break;
+            c = (unsigned char)((state & -4) | (i >> 6)); state = ((i & 63) << 2) | 0; break;
           default: abort(); /* stupid gcc */
         }
         if (c < 26)
@@ -327,18 +327,18 @@ utf7_reset (conv_t conv, unsigned char *r, int n)
   state_t state = conv->ostate;
   if (state & 3) {
     /* deactivate base64 encoding */
-    unsigned int count = ((state & 3) >= 2 ? 1 : 0) + 1;
+    int count = ((state & 3) >= 2 ? 1 : 0) + 1;
     if (n < count)
       return RET_TOOSMALL;
     if ((state & 3) >= 2) {
       unsigned int i = state & -4;
-      unsigned char c;
+      unsigned char c = '\0';
       if (i < 26)
-        c = i+'A';
+        c = (unsigned char)(i+'A');
       else if (i < 52)
-        c = i-26+'a';
+        c = (unsigned char)(i-26+'a');
       else if (i < 62)
-        c = i-52+'0';
+        c = (unsigned char)(i-52+'0');
       else if (i == 62)
         c = '+';
       else if (i == 63)

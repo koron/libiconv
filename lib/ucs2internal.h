@@ -42,7 +42,7 @@ ucs2internal_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   if (wc < 0x10000 && !(wc >= 0xd800 && wc < 0xe000)) {
     if (n >= 2) {
-      *(unsigned short *)r = wc;
+      *(unsigned short *)r = (unsigned short)wc;
       return 2;
     } else
       return RET_TOOSMALL;

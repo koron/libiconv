@@ -97,7 +97,7 @@ static int
 c99_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   if (wc < 0xa0) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   } else {
     int result;
@@ -116,7 +116,7 @@ c99_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       r += 2;
       for (count = result-3; count >= 0; count--) {
         unsigned int i = (wc >> (4*count)) & 0x0f;
-        *r++ = (i < 10 ? '0'+i : 'a'-10+i);
+        *r++ = (unsigned char)((i < 10 ? '0'+i : 'a'-10+i));
       }
       return result;
     } else

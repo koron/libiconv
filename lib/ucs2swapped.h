@@ -49,7 +49,7 @@ ucs2swapped_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 
   if (wc < 0x10000 && !(wc >= 0xd800 && wc < 0xe000)) {
     if (n >= 2) {
-      unsigned short x = wc;
+      unsigned short x = (unsigned short)wc;
       x = (x >> 8) | (x << 8);
       *(unsigned short *)r = x;
       return 2;
