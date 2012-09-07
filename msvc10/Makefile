@@ -21,6 +21,9 @@ TARGETLANG = LANG_JAPANESE
 
 build : $(OUTPUTS)
 
+tags :
+	ctags -R ../lib ../src ../srclib .
+
 clean :
 	-DEL /F /Q *.exp
 	-DEL /F /Q *.lib
@@ -31,6 +34,8 @@ distclean :
 	-DEL /F /Q *.dll
 	-DEL /F /Q *.exe
 	-DEL /F tags
+
+.PHONY : build tags clean distclean
 
 ############################################################################
 
