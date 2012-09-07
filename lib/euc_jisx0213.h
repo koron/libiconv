@@ -147,7 +147,7 @@ static int
 euc_jisx0213_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   int count = 0;
-  unsigned short lasttwo = conv->ostate;
+  unsigned short lasttwo = (unsigned short)conv->ostate;
 
   if (lasttwo) {
     /* Attempt to combine the last character with this one. */
@@ -211,7 +211,7 @@ euc_jisx0213_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
     /* Half-width katakana. */
     if (n >= count+2) {
       r[0] = 0x8e;
-      r[1] = wc - 0xfec0;
+      r[1] = (unsigned char)(wc - 0xfec0);
       conv->ostate = 0;
       return count+2;
     } else

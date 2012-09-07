@@ -17,7 +17,7 @@ INCLUDES =	-I . \
 		-I ..\srclib
 
 CCFLAGS =	$(DEFINES) $(INCLUDES) \
-	  	/wd 4100 /wd 4819
+	  	/wd 4100 /wd 4819 /wd4127
 
 ############################################################################
 # WINDOWS BUILD SETTINGS.
@@ -40,6 +40,8 @@ $(OUTPUT) : $(OBJS)
 
 {..\libcharset\lib}.c.obj ::
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /c $<
+
+build : $(OUTPUT)
 
 clean :
 	-DEL /F /Q *.dll

@@ -254,7 +254,7 @@ static const struct { unsigned short base; unsigned short composed; } iso2022_jp
 };
 
 #define SPLIT_STATE \
-  unsigned short lasttwo = state >> 3; state_t prevstate = state >> 19; state &= 7
+  unsigned short lasttwo = (unsigned short)state >> 3; state_t prevstate = state >> 19; state &= 7
 #define COMBINE_STATE \
   state |= (prevstate << 19) | (lasttwo << 3)
 #define COMBINE_STATE_NO_LASTTWO \

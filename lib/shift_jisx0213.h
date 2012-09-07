@@ -161,7 +161,7 @@ static int
 shift_jisx0213_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   int count = 0;
-  unsigned short lasttwo = conv->ostate;
+  unsigned short lasttwo = (unsigned short)conv->ostate;
 
   if (lasttwo) {
     /* Attempt to combine the last character with this one. */
@@ -238,7 +238,7 @@ shift_jisx0213_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
   } else if (wc >= 0xff61 && wc <= 0xff9f) {
     /* Half-width katakana. */
     if (n > count) {
-      r[0] = wc - 0xfec0;
+      r[0] = (unsigned char)(wc - 0xfec0);
       conv->ostate = 0;
       return count+1;
     } else
@@ -282,8 +282,8 @@ shift_jisx0213_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       }
       /* Output the shifted representation. */
       if (n >= count+2) {
-        r[0] = s1;
-        r[1] = s2;
+        r[0] = (unsigned char)s1;
+        r[1] = (unsigned char)s2;
         conv->ostate = 0;
         return count+2;
       } else

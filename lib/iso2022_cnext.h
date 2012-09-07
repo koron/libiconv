@@ -262,7 +262,7 @@ iso2022_cn_ext_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, int n)
       if (n < count+2)
         goto none;
       if (s[0] < 0x80 && s[1] < 0x80) {
-        int ret;
+        int ret = 0;
         switch (state2) {
           case STATE2_NONE:
             goto ilseq;
