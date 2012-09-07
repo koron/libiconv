@@ -107,15 +107,15 @@ cp936_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       unsigned int i = wc - 0xe000;
       unsigned int c1 = i / 94;
       unsigned int c2 = i % 94;
-      r[0] = c1 + (c1 < 6 ? 0xaa : 0xf2);
-      r[1] = c2 + 0xa1;
+      r[0] = (unsigned char)(c1 + (c1 < 6 ? 0xaa : 0xf2));
+      r[1] = (unsigned char)(c2 + 0xa1);
       return 2;
     } else {
       unsigned int i = wc - 0xe4c6;
       unsigned int c1 = i / 96;
       unsigned int c2 = i % 96;
-      r[0] = c1 + 0xa1;
-      r[1] = c2 + (c2 < 0x3f ? 0x40 : 0x41);
+      r[0] = (unsigned char)(c1 + 0xa1);
+      r[1] = (unsigned char)(c2 + (c2 < 0x3f ? 0x40 : 0x41));
       return 2;
     }
   } else if (wc == 0x20ac) {

@@ -41,11 +41,11 @@ static int
 tis620_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   if (wc < 0x0080) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x0e01 && wc <= 0x0e5b && !(wc >= 0x0e3b && wc <= 0x0e3e)) {
-    *r = wc-0x0d60;
+    *r = (unsigned char)(wc-0x0d60);
     return 1;
   }
   return RET_ILUNI;

@@ -31,7 +31,7 @@ static int
 hz_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, int n)
 {
   state_t state = conv->istate;
-  unsigned int count = 0;
+  int count = 0;
   unsigned char c;
   for (;;) {
     c = *s;

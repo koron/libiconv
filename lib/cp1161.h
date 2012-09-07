@@ -70,13 +70,13 @@ cp1161_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0080) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x00a0 && wc < 0x00b0)
     c = cp1161_page00[wc-0x00a0];
   else if (wc >= 0x0e48 && wc < 0x0e4c)
-    c = wc-0x0d60;
+    c = (unsigned char)(wc-0x0d60);
   else if (wc >= 0x0e00 && wc < 0x0e60)
     c = cp874_page0e[wc-0x0e00];
   else if (wc == 0x20ac)

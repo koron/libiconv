@@ -239,7 +239,7 @@ gb18030uni_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
         r[3] = (i % 10) + 0x30; i = i / 10;
         r[2] = (i % 126) + 0x81; i = i / 126;
         r[1] = (i % 10) + 0x30; i = i / 10;
-        r[0] = i + 0x81;
+        r[0] = (unsigned char)(i + 0x81);
         return 4;
       }
     }

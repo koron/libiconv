@@ -72,8 +72,8 @@ johab_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, int n)
            they have been moved to the Hangul section, see
            johab_hangul_page31. */
         if (!(s1 == 0xda && (s2 >= 0xa1 && s2 <= 0xd3))) {
-          unsigned char t1 = (s1 < 0xe0 ? 2*(s1-0xd9) : 2*s1-0x197);
-          unsigned char t2 = (s2 < 0x91 ? s2-0x31 : s2-0x43);
+          unsigned char t1 = (unsigned char)(s1 < 0xe0 ? 2*(s1-0xd9) : 2*s1-0x197);
+          unsigned char t2 = (unsigned char)(s2 < 0x91 ? s2-0x31 : s2-0x43);
           unsigned char buf[2];
           buf[0] = t1 + (t2 < 0x5e ? 0 : 1) + 0x21;
           buf[1] = (t2 < 0x5e ? t2 : t2-0x5e) + 0x21;
@@ -93,7 +93,7 @@ johab_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 
   /* Try ASCII variation. */
   if (wc < 0x0080 && wc != 0x005c) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   if (wc == 0x20a9) {
@@ -129,7 +129,7 @@ johab_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
         && (c2 >= 0x21 && c2 <= 0x7e)) {
       unsigned int t = (c1 < 0x4A ? (c1-0x21+0x1B2) : (c1-0x21+0x197));
       unsigned char t2 = ((t & 1) ? 0x5e : 0) + (c2 - 0x21);
-      r[0] = t >> 1;
+      r[0] = (unsigned char)(t >> 1);
       r[1] = (t2 < 0x4e ? t2+0x31 : t2+0x43);
       return 2;
     }

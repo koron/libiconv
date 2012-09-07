@@ -124,7 +124,7 @@ cp860_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0080) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x00a0 && wc < 0x0100)
@@ -138,7 +138,7 @@ cp860_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
   else if (wc >= 0x2218 && wc < 0x2268)
     c = cp860_page22[wc-0x2218];
   else if (wc >= 0x2320 && wc < 0x2322)
-    c = wc-0x222c;
+    c = (unsigned char)(wc-0x222c);
   else if (wc >= 0x2500 && wc < 0x25a8)
     c = cp860_page25[wc-0x2500];
   if (c != 0) {

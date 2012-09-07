@@ -155,13 +155,13 @@ cp864_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0020) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x0020 && wc < 0x0028)
     c = cp864_page00[wc-0x0020];
   else if (wc >= 0x0028 && wc < 0x0080)
-    c = wc;
+    c = (unsigned char)wc;
   else if (wc >= 0x00a0 && wc < 0x00f8)
     c = cp864_page00_1[wc-0x00a0];
   else if (wc == 0x03b2)

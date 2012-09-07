@@ -116,10 +116,10 @@ cp949_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       return RET_TOOSMALL;
     if (wc < 0xe05e) {
       r[0] = 0xc9;
-      r[1] = wc - 0xe000 + 0xa1;
+      r[1] = (unsigned char)(wc - 0xe000 + 0xa1);
     } else {
       r[0] = 0xfe;
-      r[1] = wc - 0xe05e + 0xa1;
+      r[1] = (unsigned char)(wc - 0xe05e + 0xa1);
     }
     return 2;
   }

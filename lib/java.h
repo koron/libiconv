@@ -98,17 +98,17 @@ static int
 java_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   if (wc < 0x80) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   } else if (wc < 0x10000) {
     if (n >= 6) {
       unsigned int i;
       r[0] = '\\';
       r[1] = 'u';
-      i = (wc >> 12) & 0x0f; r[2] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = (wc >> 8) & 0x0f;  r[3] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = (wc >> 4) & 0x0f;  r[4] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = wc & 0x0f;         r[5] = (i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc >> 12) & 0x0f; r[2] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc >> 8) & 0x0f;  r[3] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc >> 4) & 0x0f;  r[4] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = wc & 0x0f;         r[5] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
       return 6;
     } else
       return RET_TOOSMALL;
@@ -119,16 +119,16 @@ java_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       unsigned int i;
       r[0] = '\\';
       r[1] = 'u';
-      i = (wc1 >> 12) & 0x0f; r[2] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = (wc1 >> 8) & 0x0f;  r[3] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = (wc1 >> 4) & 0x0f;  r[4] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = wc1 & 0x0f;         r[5] = (i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc1 >> 12) & 0x0f; r[2] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc1 >> 8) & 0x0f;  r[3] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc1 >> 4) & 0x0f;  r[4] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = wc1 & 0x0f;         r[5] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
       r[6] = '\\';
       r[7] = 'u';
-      i = (wc2 >> 12) & 0x0f; r[8] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = (wc2 >> 8) & 0x0f;  r[9] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = (wc2 >> 4) & 0x0f; r[10] = (i < 10 ? '0'+i : 'a'-10+i);
-      i = wc2 & 0x0f;        r[11] = (i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc2 >> 12) & 0x0f; r[8] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc2 >> 8) & 0x0f;  r[9] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = (wc2 >> 4) & 0x0f; r[10] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
+      i = wc2 & 0x0f;        r[11] = (unsigned char)(i < 10 ? '0'+i : 'a'-10+i);
       return 12;
     } else
       return RET_TOOSMALL;

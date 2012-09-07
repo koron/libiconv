@@ -89,7 +89,7 @@ tcvn_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, int n)
     wc = c;
   else
     wc = tcvn_2uni_2[c-0x80];
-  last_wc = conv->istate;
+  last_wc = (unsigned short)conv->istate;
   if (last_wc) {
     if (wc >= 0x0300 && wc < 0x0340) {
       /* See whether last_wc and wc can be combined. */
@@ -219,7 +219,7 @@ tcvn_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0080 && (wc >= 0x0020 || (0x00fe0076 & (1 << wc)) == 0)) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x00a0 && wc < 0x01b8)
@@ -274,7 +274,7 @@ tcvn_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
          0x00f3, 0x00f4, 0x00f6, 0x00f8, 0x00fc, 0x0102, 0x0103, 0x01a0,
          0x01a1, 0x01af, 0x01b0. */
       if (wc < 0x0080)
-        c = wc;
+        c = (unsigned char)wc;
       else {
         c = tcvn_page00[wc-0x00a0];
         if (c == 0)

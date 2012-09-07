@@ -250,7 +250,7 @@ static int johab_hangul_decompose (conv_t conv, ucs4_t* r, ucs4_t wc)
         *p++ = 0x3130 + jamo2;
       if (jamo3 != FILL)
         *p++ = 0x3130 + jamo3;
-      return p-r;
+      return (int)(p-r);
     }
   }
   return RET_ILUNI;

@@ -84,7 +84,7 @@ cp1258_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, int n)
     if (wc == 0xfffd)
       return RET_ILSEQ;
   }
-  last_wc = conv->istate;
+  last_wc = (unsigned short)conv->istate;
   if (last_wc) {
     if (wc >= 0x0300 && wc < 0x0340) {
       /* See whether last_wc and wc can be combined. */
@@ -205,11 +205,11 @@ cp1258_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0080) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x00a0 && wc < 0x00c0)
-    c = wc;
+    c = (unsigned char)wc;
   else if (wc >= 0x00c0 && wc < 0x0118)
     c = cp1258_page00[wc-0x00c0];
   else if (wc >= 0x0150 && wc < 0x01b8)
@@ -272,7 +272,7 @@ cp1258_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
          0x00f3, 0x00f4, 0x00f6, 0x00f8, 0x00fc, 0x0102, 0x0103, 0x01a0,
          0x01a1, 0x01af, 0x01b0. */
       if (wc < 0x0100)
-        c = wc;
+        c = (unsigned char)wc;
       else if (wc < 0x0118)
         c = cp1258_page00[wc-0x00c0];
       else

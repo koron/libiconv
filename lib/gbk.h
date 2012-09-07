@@ -138,7 +138,7 @@ gbk_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
     if (n < 2)
       return RET_TOOSMALL;
     r[0] = 0xa2;
-    r[1] = 0xa1 + (wc-0x2170);
+    r[1] = (unsigned char)(0xa1 + (wc-0x2170));
     return 2;
   }
   ret = cp936ext_wctomb(conv,buf,wc,2);

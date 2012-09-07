@@ -121,8 +121,8 @@ sjis_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
     unsigned char c1, c2;
     if (n < 2)
       return RET_TOOSMALL;
-    c1 = (unsigned int) (wc - 0xe000) / 188;
-    c2 = (unsigned int) (wc - 0xe000) % 188;
+    c1 = (unsigned char)((unsigned int) (wc - 0xe000) / 188);
+    c2 = (unsigned char)((unsigned int) (wc - 0xe000) % 188);
     r[0] = c1+0xf0;
     r[1] = (c2 < 0x3f ? c2+0x40 : c2+0x41);
     return 2;

@@ -235,8 +235,8 @@ cp950_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
         if (i < 5809) {
           unsigned int c1 = i / 157;
           unsigned int c2 = i % 157;
-          buf[0] = c1 + (c1 < 5 ? 0xfa : c1 < 24 ? 0x89 : 0x69);
-          buf[1] = c2 + (c2 < 0x3f ? 0x40 : 0x62);
+          buf[0] = (unsigned char)(c1 + (c1 < 5 ? 0xfa : c1 < 24 ? 0x89 : 0x69));
+          buf[1] = (unsigned char)(c2 + (c2 < 0x3f ? 0x40 : 0x62));
           ret = 2;
           break;
         }

@@ -119,7 +119,7 @@ static int
 big5hkscs2004_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   int count = 0;
-  unsigned char last = conv->ostate;
+  unsigned char last = (unsigned char)conv->ostate;
 
   if (last) {
     /* last is = 0x66 or = 0xa7. */
@@ -217,7 +217,7 @@ big5hkscs2004_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 static int
 big5hkscs2004_reset (conv_t conv, unsigned char *r, int n)
 {
-  unsigned char last = conv->ostate;
+  unsigned char last = (unsigned char)conv->ostate;
 
   if (last) {
     if (n < 2)

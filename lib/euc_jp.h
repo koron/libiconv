@@ -169,8 +169,8 @@ euc_jp_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       unsigned char c1, c2;
       if (n < 2)
         return RET_TOOSMALL;
-      c1 = (unsigned int) (wc - 0xe000) / 94;
-      c2 = (unsigned int) (wc - 0xe000) % 94;
+      c1 = (unsigned char)((unsigned int) (wc - 0xe000) / 94);
+      c2 = (unsigned char)((unsigned int) (wc - 0xe000) % 94);
       r[0] = c1+0xf5;
       r[1] = c2+0xa1;
       return 2;
@@ -178,8 +178,8 @@ euc_jp_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       unsigned char c1, c2;
       if (n < 3)
         return RET_TOOSMALL;
-      c1 = (unsigned int) (wc - 0xe3ac) / 94;
-      c2 = (unsigned int) (wc - 0xe3ac) % 94;
+      c1 = (unsigned char)((unsigned int) (wc - 0xe3ac) / 94);
+      c2 = (unsigned char)((unsigned int) (wc - 0xe3ac) % 94);
       r[0] = 0x8f;
       r[1] = c1+0xf5;
       r[2] = c2+0xa1;

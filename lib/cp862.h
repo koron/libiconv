@@ -124,7 +124,7 @@ cp862_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0080) {
-    *r = wc;
+    *r = (unsigned char)wc;
     return 1;
   }
   else if (wc >= 0x00a0 && wc < 0x0100)
@@ -134,7 +134,7 @@ cp862_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
   else if (wc >= 0x0390 && wc < 0x03c8)
     c = cp862_page03[wc-0x0390];
   else if (wc >= 0x05d0 && wc < 0x05eb)
-    c = wc-0x0550;
+    c = (unsigned char)(wc-0x0550);
   else if (wc == 0x207f)
     c = 0xfc;
   else if (wc == 0x20a7)
@@ -144,7 +144,7 @@ cp862_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
   else if (wc == 0x2310)
     c = 0xa9;
   else if (wc >= 0x2320 && wc < 0x2322)
-    c = wc-0x222c;
+    c = (unsigned char)(wc-0x222c);
   else if (wc >= 0x2500 && wc < 0x25a8)
     c = cp862_page25[wc-0x2500];
   if (c != 0) {
