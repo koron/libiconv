@@ -3,11 +3,6 @@
 
 OUTPUT = libiconv.dll
 
-SRCS =	..\lib\iconv.c \
-	..\libcharset\lib\localcharset.c
-OBJS =	.\iconv.obj \
-	.\localcharset.obj
-
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 		/D_CRT_SECURE_NO_WARNINGS=1 \
 		/DBUILDING_LIBICONV=1
@@ -28,19 +23,6 @@ TARGETLANG = LANG_JAPANESE
 
 !INCLUDE <Win32.Mak>
 
-############################################################################
-# DON'T CHANGE BELOW.
-
-$(OUTPUT) : $(OBJS)
-	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ $(OBJS)
-
-{..\lib}.c.obj ::
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /c $<
-
-{..\libcharset\lib}.c.obj ::
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /c $<
-
 build : $(OUTPUT)
 
 clean :
@@ -50,3 +32,17 @@ clean :
 	-DEL /F /Q *.lib
 	-DEL /F /Q *.obj
 	-DEL /F /Q *.pdb
+
+############################################################################
+
+libiconv.dll : libiconv.obj localcharset.obj
+	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
+		/OUT:$@ libiconv.obj localcharset.obj
+
+libiconv.obj : ..\lib\iconv.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
+		/c ..\lib\iconv.c
+
+localcharset.obj : ..\libcharset\lib\localcharset.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
+		/c ..\libcharset\lib\localcharset.c
