@@ -299,7 +299,7 @@ big5_2003_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       break;
     case 0x21:
       if (wc >= 0x2170 && wc <= 0x2179) {
-        buf[0] = 0xc6; buf[1] = wc - 0x20bb; ret = 2;
+        buf[0] = 0xc6; buf[1] = (unsigned char)(wc - 0x20bb); ret = 2;
         break;
       }
       break;
@@ -311,14 +311,14 @@ big5_2003_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
         return RET_ILUNI;
       break;
     case 0x24:
-      if (wc <= 0x241f) { buf[0] = 0xa3; buf[1] = wc - 0x2340; ret = 2; break; }
+      if (wc <= 0x241f) { buf[0] = 0xa3; buf[1] = (unsigned char)(wc - 0x2340); ret = 2; break; }
       if (wc == 0x2421) { buf[0] = 0xa3; buf[1] = 0xe0; ret = 2; break; }
       if (wc >= 0x2460 && wc <= 0x2469) {
-        buf[0] = 0xc6; buf[1] = wc - 0x23bf; ret = 2;
+        buf[0] = 0xc6; buf[1] = (unsigned char)(wc - 0x23bf); ret = 2;
         break;
       }
       if (wc >= 0x2474 && wc <= 0x247d) {
-        buf[0] = 0xc6; buf[1] = wc - 0x23c9; ret = 2;
+        buf[0] = 0xc6; buf[1] = (unsigned char)(wc - 0x23c9); ret = 2;
         break;
       }
       break;
@@ -370,18 +370,18 @@ big5_2003_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       break;
     case 0x30:
       if (wc >= 0x3005 && wc <= 0x3007) {
-        buf[0] = 0xc6; buf[1] = wc - 0x2f25; ret = 2;
+        buf[0] = 0xc6; buf[1] = (unsigned char)(wc - 0x2f25); ret = 2;
         break;
       }
       if (wc >= 0x3038 && wc <= 0x303a) {
-        buf[0] = 0xa2; buf[1] = wc - 0x2f6c; ret = 2;
+        buf[0] = 0xa2; buf[1] = (unsigned char)(wc - 0x2f6c); ret = 2;
         break;
       }
       if (wc >= 0x3041 && wc <= 0x3093) {
         if (wc < 0x3059) {
-          buf[0] = 0xc6; buf[1] = wc - 0x2f5a;
+          buf[0] = 0xc6; buf[1] = (unsigned char)(wc - 0x2f5a);
         } else {
-          buf[0] = 0xc7; buf[1] = wc - 0x3019;
+          buf[0] = 0xc7; buf[1] = (unsigned char)(wc - 0x3019);
         }
         ret = 2;
         break;
@@ -389,7 +389,7 @@ big5_2003_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
       if (wc == 0x309d) { buf[0] = 0xc6; buf[1] = 0xdc; ret = 2; break; }
       if (wc == 0x309e) { buf[0] = 0xc6; buf[1] = 0xdd; ret = 2; break; }
       if (wc >= 0x30a1 && wc <= 0x30f6) {
-        buf[0] = 0xc7; buf[1] = wc - (wc < 0x30a5 ? 0x3026 : 0x3004); ret = 2;
+        buf[0] = 0xc7; buf[1] = (unsigned char)(wc - (wc < 0x30a5 ? 0x3026 : 0x3004)); ret = 2;
         break;
       }
       if (wc == 0x30fc) { buf[0] = 0xc6; buf[1] = 0xe3; ret = 2; break; }
@@ -435,8 +435,8 @@ big5_2003_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
         if (i < 5809) {
           unsigned int c1 = i / 157;
           unsigned int c2 = i % 157;
-          buf[0] = c1 + (c1 < 5 ? 0xfa : c1 < 24 ? 0x89 : 0x69);
-          buf[1] = c2 + (c2 < 0x3f ? 0x40 : 0x62);
+          buf[0] = (unsigned char)(c1 + (c1 < 5 ? 0xfa : c1 < 24 ? 0x89 : 0x69));
+          buf[1] = (unsigned char)(c2 + (c2 < 0x3f ? 0x40 : 0x62));
           ret = 2;
           break;
         }

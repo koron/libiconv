@@ -36,8 +36,10 @@
 # include <time.h>
 # include <wchar.h>
 # define BUF_SIZE 64  /* assume MB_LEN_MAX <= 64 */
+# if !HAVE_MBRTOWC
   /* Some systems, like BeOS, have multibyte encodings but lack mbstate_t.  */
   extern size_t mbrtowc ();
+# endif
 # ifdef mbstate_t
 #  define mbrtowc(pwc, s, n, ps) (mbrtowc)(pwc, s, n, 0)
 #  define mbsinit(ps) 1
@@ -179,7 +181,7 @@ static size_t wchar_from_loop_convert (iconv_t icd,
                                                     wcd->parent.fallbacks.data);
           if (locals.l_errno != 0) {
             errno = locals.l_errno;
-            return -1;
+            return (size_t)-1;
           }
           wcd->state = state;
           *inbuf = (const char *) (inptr + 1);
@@ -192,7 +194,7 @@ static size_t wchar_from_loop_convert (iconv_t icd,
         #endif
         else {
           errno = EILSEQ;
-          return -1;
+          return (size_t)-1;
         }
       }
       inptr++;
@@ -213,10 +215,10 @@ static size_t wchar_from_loop_convert (iconv_t icd,
         if (res == (size_t)(-1)) {
           if (errno == EILSEQ)
             /* Invalid input. */
-            return -1;
+            return (size_t)-1;
           else if (errno == E2BIG)
             /* Output buffer too small. */
-            return -1;
+            return (size_t)-1;
           else if (errno == EINVAL) {
             /* Continue, append next wchar_t, but avoid buffer overrun. */
             if (bufcount + MB_CUR_MAX > BUF_SIZE)
@@ -264,7 +266,7 @@ static size_t wchar_from_loop_reset (iconv_t icd,
                                           &outptr,&outleft);
         if (res == (size_t)(-1)) {
           if (errno == E2BIG)
-            return -1;
+            return (size_t)-1;
           else
             abort();
         } else {
@@ -343,7 +345,7 @@ static size_t wchar_to_loop_convert (iconv_t icd,
       if (res == (size_t)(-1)) {
         if (errno == EILSEQ)
           /* Invalid input. */
-          return -1;
+          return (size_t)-1;
         else if (errno == EINVAL) {
           /* Incomplete input. Next try with one more input byte. */
         } else
@@ -376,7 +378,7 @@ static size_t wchar_to_loop_convert (iconv_t icd,
                                                       wcd->parent.fallbacks.data);
               if (locals.l_errno != 0) {
                 errno = locals.l_errno;
-                return -1;
+                return (size_t)-1;
               }
               /* Restoring the state is not needed because it is the initial
                  state anyway: For all known locale encodings, the multibyte
@@ -392,11 +394,11 @@ static size_t wchar_to_loop_convert (iconv_t icd,
             }
             #endif
             else
-              return -1;
+              return (size_t)-1;
           } else {
             if (*outbytesleft < sizeof(wchar_t)) {
               errno = E2BIG;
-              return -1;
+              return (size_t)-1;
             }
             *(wchar_t*) *outbuf = wc;
             /* Restoring the state is not needed because it is the initial
@@ -417,7 +419,7 @@ static size_t wchar_to_loop_convert (iconv_t icd,
       if (incount > *inbytesleft) {
         /* Incomplete input. */
         errno = EINVAL;
-        return -1;
+        return (size_t)-1;
       }
     }
   }

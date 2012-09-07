@@ -204,7 +204,7 @@
 #undef HAVE_MACH_O_DYLD_H
 
 /* Define to 1 if you have the `mbrtowc' function. */
-#undef HAVE_MBRTOWC
+#define HAVE_MBRTOWC 1
 
 /* Define to 1 if you have the `mbsinit' function. */
 #undef HAVE_MBSINIT
@@ -656,7 +656,7 @@
 #define HAVE_WCHAR_T 1
 
 /* Define to 1 if you have the `wcrtomb' function. */
-#undef HAVE_WCRTOMB
+#define HAVE_WCRTOMB 1
 
 /* Define to 1 if you have the <winsock2.h> header file. */
 #define HAVE_WINSOCK2_H 1

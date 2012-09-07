@@ -71,7 +71,7 @@ riscos1_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char c = 0;
   if (wc < 0x0080 || wc == 0x0083 || wc == 0x0087 || (wc >= 0x00a0 && wc < 0x0100)) {
-    *r = wc;
+    *r = (unsigned char)(wc);
     return 1;
   }
   else if (wc >= 0x0150 && wc < 0x0178)
@@ -87,7 +87,7 @@ riscos1_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
   else if (wc == 0x2573)
     c = 0x84;
   else if (wc >= 0xfb01 && wc < 0xfb03)
-    c = wc-0xfa63;
+    c = (unsigned char)(wc-0xfa63);
   if (c != 0) {
     *r = c;
     return 1;

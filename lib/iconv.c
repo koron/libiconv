@@ -172,7 +172,7 @@ static const struct stringpool2_t stringpool2_contents = {
 };
 #define stringpool2 ((const char *) &stringpool2_contents)
 static const struct alias sysdep_aliases[] = {
-#define S(tag,name,encoding_index) { (int)(long)&((struct stringpool2_t *)0)->stringpool_##tag, encoding_index },
+#define S(tag,name,encoding_index) { (int)(ptrdiff_t)&((struct stringpool2_t *)0)->stringpool_##tag, encoding_index },
 #include "aliases2.h"
 #undef S
 };
@@ -232,7 +232,7 @@ iconv_t iconv_open (const char* tocode, const char* fromcode)
                                      : sizeof(struct conv_struct));
   if (cd == NULL) {
     errno = ENOMEM;
-    return (iconv_t)(-1);
+    return (iconv_t)(ptrdiff_t)(-1);
   }
 
 #include "iconv_open2.h"
@@ -240,7 +240,7 @@ iconv_t iconv_open (const char* tocode, const char* fromcode)
   return (iconv_t)cd;
 invalid:
   errno = EINVAL;
-  return (iconv_t)(-1);
+  return (iconv_t)(ptrdiff_t)(-1);
 }
 
 size_t iconv (iconv_t icd,
@@ -424,9 +424,9 @@ void iconvlist (int (*do_one) (unsigned int namescount,
         namesbuf[i++] = aliasbuf[j++].name;
       while (j < num_aliases && aliasbuf[j].encoding_index == ei);
       if (i > 1)
-        qsort(namesbuf, i, sizeof(const char *), compare_by_name);
+        qsort((void *)namesbuf, i, sizeof(const char *), compare_by_name);
       /* Call the callback. */
-      if (do_one(i,namesbuf,data))
+      if (do_one((unsigned int)i,namesbuf,data))
         break;
     }
   }
@@ -536,7 +536,7 @@ const char * iconv_canonicalize (const char * name)
       continue;
     }
     pool = stringpool;
-    ap = aliases_lookup(buf,bp-buf);
+    ap = aliases_lookup(buf, (unsigned int)(bp-buf));
     if (ap == NULL) {
       pool = stringpool2;
       ap = aliases2_lookup(buf);
