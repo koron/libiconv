@@ -27,7 +27,13 @@
 
 /* Get ssize_t.  */
 #include <sys/types.h>
-#include <unistd.h>
+#ifndef _WIN32
+# include <unistd.h>
+#else
+typedef int ssize_t;
+# include <io.h>
+# define read _read
+#endif
 
 #include <errno.h>
 
@@ -63,7 +69,7 @@ safe_rw (int fd, void const *buf, size_t count)
 
   for (;;)
     {
-      ssize_t result = rw (fd, buf, count);
+      ssize_t result = rw (fd, buf, (ssize_t)count);
 
       if (0 <= result)
         return result;

@@ -1,15 +1,13 @@
 #  Build debug version:		nmake
 #  Build release version:	nmake nodebug=1
 
-OUTPUT = libiconv.dll
+OUTPUTS =	libiconv.dll iconv_no_i18n.exe
 
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 		/D_CRT_SECURE_NO_WARNINGS=1 \
 		/DBUILDING_LIBICONV=1
 
-INCLUDES =	-I . \
-		-I ..\lib \
-		-I ..\srclib
+INCLUDES =	-I. -I..\srclib
 
 CCFLAGS =	$(DEFINES) $(INCLUDES) \
 		/wd 4100 /wd 4819 /wd 4127
@@ -17,13 +15,13 @@ CCFLAGS =	$(DEFINES) $(INCLUDES) \
 ############################################################################
 # WINDOWS BUILD SETTINGS.
 
-APPVER = 5.0
+APPVER = 6.0
 TARGET = WINNT
 TARGETLANG = LANG_JAPANESE
 
 !INCLUDE <Win32.Mak>
 
-build : $(OUTPUT)
+build : $(OUTPUTS)
 
 clean :
 	-DEL /F /Q *.dll
@@ -35,9 +33,13 @@ clean :
 
 ############################################################################
 
-libiconv.dll : libiconv.obj localcharset.obj
+### libiconv.dll
+
+OBJS_LIBICONV_DLL = libiconv.obj localcharset.obj
+
+libiconv.dll libiconv.lib : $(OBJS_LIBICONV_DLL)
 	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ libiconv.obj localcharset.obj
+		/OUT:$@ $(OBJS_LIBICONV_DLL)
 
 libiconv.obj : ..\lib\iconv.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
@@ -46,3 +48,27 @@ libiconv.obj : ..\lib\iconv.c
 localcharset.obj : ..\libcharset\lib\localcharset.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
 		/c ..\libcharset\lib\localcharset.c
+
+### iconv_no_i18n.exe
+
+OBJS_ICONV_NO_I18N_EXE = iconv_no_i18n.obj progname.obj width.obj safe-read.obj
+
+iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
+
+iconv_no_i18n.obj : ..\src\iconv_no_i18n.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
+		/c ..\src\iconv_no_i18n.c
+
+progname.obj : ..\srclib\progname.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
+		/c ..\srclib\progname.c
+
+width.obj : ..\srclib\uniwidth\width.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
+		/c ..\srclib\uniwidth\width.c
+
+safe-read.obj : ..\srclib\safe-read.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
+		/c ..\srclib\safe-read.c

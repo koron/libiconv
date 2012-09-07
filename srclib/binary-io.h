@@ -25,6 +25,11 @@
    so we include it here first.  */
 #include <stdio.h>
 
+#if defined(_WIN32) && defined(_MSC_VER)
+# include <io.h>
+#endif
+
+
 /* SET_BINARY (fd);
    changes the file descriptor fd to perform binary I/O.  */
 #if O_BINARY

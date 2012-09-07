@@ -279,7 +279,7 @@ static size_t check_subst_formatstring (const char *format, const char *param_na
       /* A directive. */
       unsigned int width = 0;
       unsigned int precision = 0;
-      unsigned int length;
+      unsigned int length = 0;
       /* Parse flags. */
       for (;;) {
         if (*format == ' ' || *format == '+' || *format == '-'
@@ -711,7 +711,7 @@ static int convert (iconv_t cd, int infile, const char* infilename)
         size_t res = iconv(cd,(ICONV_CONST char**)&inptr,&insize,&outptr,&outsize);
         if (outptr != outbuf) {
           int saved_errno = errno;
-          if (fwrite(outbuf,1,outptr-outbuf,stdout) < outptr-outbuf) {
+          if (fwrite(outbuf,1,outptr-outbuf,stdout) < (size_t)(outptr-outbuf)) {
             status = 1;
             goto done;
           }
@@ -773,7 +773,7 @@ static int convert (iconv_t cd, int infile, const char* infilename)
     size_t res = iconv(cd,NULL,NULL,&outptr,&outsize);
     if (outptr != outbuf) {
       int saved_errno = errno;
-      if (fwrite(outbuf,1,outptr-outbuf,stdout) < outptr-outbuf) {
+      if (fwrite(outbuf,1,outptr-outbuf,stdout) < (size_t)(outptr-outbuf)) {
         status = 1;
         goto done;
       }
@@ -1006,14 +1006,14 @@ int main (int argc, char* argv[])
     if (tocode == NULL)
       tocode = "char";
     cd = iconv_open(tocode,fromcode);
-    if (cd == (iconv_t)(-1)) {
-      if (iconv_open("UCS-4",fromcode) == (iconv_t)(-1))
+    if (cd == (iconv_t)(ptrdiff_t)(-1)) {
+      if (iconv_open("UCS-4",fromcode) == (iconv_t)(ptrdiff_t)(-1))
         error(0,0,
               /* TRANSLATORS: An error message.
                  The placeholder expands to the encoding name, specified through --from-code.  */
               _("conversion from %s unsupported"),
               fromcode);
-      else if (iconv_open(tocode,"UCS-4") == (iconv_t)(-1))
+      else if (iconv_open(tocode,"UCS-4") == (iconv_t)(ptrdiff_t)(-1))
         error(0,0,
               /* TRANSLATORS: An error message.
                  The placeholder expands to the encoding name, specified through --to-code.  */
