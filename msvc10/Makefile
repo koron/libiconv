@@ -12,7 +12,7 @@ INCLUDES =	-I . \
 		-I ..\srclib
 
 CCFLAGS =	$(DEFINES) $(INCLUDES) \
-	  	/wd 4100 /wd 4819 /wd4127
+		/wd 4100 /wd 4819 /wd 4127
 
 ############################################################################
 # WINDOWS BUILD SETTINGS.
