@@ -73,9 +73,11 @@
 # define relocate(pathname) (pathname)
 #endif
 
+#if !(defined DARWIN7 || defined VMS || defined WIN32_NATIVE || defined __CYGWIN__)
 /* Get LIBDIR.  */
 #ifndef LIBDIR
 # include "configmake.h"
+#endif
 #endif
 
 /* Define O_NOFOLLOW to 0 on platforms where it does not exist.  */
