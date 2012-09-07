@@ -24,15 +24,17 @@ build : $(OUTPUTS)
 tags :
 	ctags -R ../lib ../src ../srclib .
 
+test : table-from.exe table-to.exe test-shiftseq.exe test-to-wchar.exe
+
 clean :
+	-DEL /F /Q *.dll
+	-DEL /F /Q *.exe
 	-DEL /F /Q *.exp
 	-DEL /F /Q *.lib
 	-DEL /F /Q *.obj
 	-DEL /F /Q *.pdb
 
 distclean :
-	-DEL /F /Q *.dll
-	-DEL /F /Q *.exe
 	-DEL /F tags
 
 .PHONY : build tags clean distclean
@@ -43,7 +45,7 @@ distclean :
 
 OBJS_LIBICONV_DLL = libiconv.obj localcharset.obj
 
-libiconv.dll libiconv.lib : $(OBJS_LIBICONV_DLL)
+libiconv.dll : $(OBJS_LIBICONV_DLL)
 	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
 		/OUT:$@ $(OBJS_LIBICONV_DLL)
 
@@ -61,7 +63,7 @@ localcharset.obj : ..\libcharset\lib\localcharset.c
 
 OBJS_ICONV_NO_I18N_EXE = iconv_no_i18n.obj progname.obj width.obj safe-read.obj
 
-iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
+iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) libiconv.dll
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
 		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
 
@@ -80,3 +82,43 @@ width.obj : ..\srclib\uniwidth\width.c
 safe-read.obj : ..\srclib\safe-read.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
 		/Fo$@ /c ..\srclib\safe-read.c
+
+### table-from.exe
+
+table-from.exe : table-from.obj libiconv.dll
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+		/OUT:$@ table-from.obj libiconv.lib
+
+table-from.obj : ..\tests\table-from.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\tests\table-from.c
+
+### table-to.exe
+
+table-to.exe : table-to.obj libiconv.dll
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+		/OUT:$@ table-to.obj libiconv.lib
+
+table-to.obj : ..\tests\table-to.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\tests\table-to.c
+
+### test-shiftseq.exe
+
+test-shiftseq.exe : test-shiftseq.obj libiconv.dll
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+		/OUT:$@ test-shiftseq.obj libiconv.lib
+
+test-shiftseq.obj : ..\tests\test-shiftseq.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\tests\test-shiftseq.c
+
+### test-to-wchar.exe
+
+test-to-wchar.exe : test-to-wchar.obj libiconv.dll
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+		/OUT:$@ test-to-wchar.obj libiconv.lib
+
+test-to-wchar.obj : ..\tests\test-to-wchar.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\tests\test-to-wchar.c

@@ -674,7 +674,7 @@
 #undef HAVE__NSGETEXECUTABLEPATH
 
 /* Define as const if the declaration of iconv() needs const. */
-#undef ICONV_CONST
+#define ICONV_CONST const
 
 /* Define to the value of ${prefix}, as a string. */
 #undef INSTALLPREFIX

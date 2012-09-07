@@ -58,7 +58,7 @@ int main (int argc, char* argv[])
   {
     unsigned int i;
     unsigned char buf[10];
-    for (i = 0; i < (bmp_only ? 0x10000 : 0x110000); i++) {
+    for (i = 0; i < (unsigned int)(bmp_only ? 0x10000 : 0x110000); i++) {
       unsigned int in = i;
       const char* inbuf = (const char*) &in;
       size_t inbytesleft = sizeof(unsigned int);
