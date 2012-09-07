@@ -4,13 +4,11 @@
 OUTPUTS =	libiconv.dll iconv_no_i18n.exe
 
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
-		/D_CRT_SECURE_NO_WARNINGS=1 \
-		/DBUILDING_LIBICONV=1
+		/D_CRT_SECURE_NO_WARNINGS=1
 
 INCLUDES =	-I. -I..\srclib
 
-CCFLAGS =	$(DEFINES) $(INCLUDES) \
-		/wd 4100 /wd 4819 /wd 4127
+CCFLAGS =	/wd 4100 /wd 4819 /wd 4127 $(INCLUDES) $(DEFINES)
 
 ############################################################################
 # WINDOWS BUILD SETTINGS.
@@ -42,12 +40,14 @@ libiconv.dll libiconv.lib : $(OBJS_LIBICONV_DLL)
 		/OUT:$@ $(OBJS_LIBICONV_DLL)
 
 libiconv.obj : ..\lib\iconv.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
-		/c ..\lib\iconv.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/DBUILDING_LIBICONV=1 \
+		/Fo$@ /c ..\lib\iconv.c
 
 localcharset.obj : ..\libcharset\lib\localcharset.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
-		/c ..\libcharset\lib\localcharset.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/DBUILDING_LIBICONV=1 \
+		/Fo$@ /c ..\libcharset\lib\localcharset.c
 
 ### iconv_no_i18n.exe
 
@@ -58,17 +58,17 @@ iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
 		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
 
 iconv_no_i18n.obj : ..\src\iconv_no_i18n.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
-		/c ..\src\iconv_no_i18n.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\src\iconv_no_i18n.c
 
 progname.obj : ..\srclib\progname.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
-		/c ..\srclib\progname.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\srclib\progname.c
 
 width.obj : ..\srclib\uniwidth\width.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
-		/c ..\srclib\uniwidth\width.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\srclib\uniwidth\width.c
 
 safe-read.obj : ..\srclib\safe-read.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) /Fo$@ \
-		/c ..\srclib\safe-read.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		/Fo$@ /c ..\srclib\safe-read.c
