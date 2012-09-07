@@ -906,12 +906,5 @@
 # define _GL_ATTRIBUTE_CONST /* empty */
 #endif
 
-
-
 /* On Windows, variables that may be in a DLL must be marked specially.  */
-#if defined _MSC_VER && defined _DLL
-# define DLL_VARIABLE __declspec (dllimport)
-#else
-# define DLL_VARIABLE
-#endif
-
+#define DLL_VARIABLE

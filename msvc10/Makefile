@@ -22,12 +22,15 @@ TARGETLANG = LANG_JAPANESE
 build : $(OUTPUTS)
 
 clean :
-	-DEL /F /Q *.dll
-	-DEL /F /Q *.exe
 	-DEL /F /Q *.exp
 	-DEL /F /Q *.lib
 	-DEL /F /Q *.obj
 	-DEL /F /Q *.pdb
+
+distclean :
+	-DEL /F /Q *.dll
+	-DEL /F /Q *.exe
+	-DEL /F tags
 
 ############################################################################
 
