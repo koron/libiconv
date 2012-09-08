@@ -106,7 +106,7 @@ cp932_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, int n)
         case 0x817c: wc = 0xff0d; break;
         case 0x8191: wc = 0xffe0; break;
         case 0x8192: wc = 0xffe1; break;
-        /*case 0x81ca: wc = 0xffe2; break;*/
+        case 0x81ca: wc = 0xffe2; break;
         default: break;
       }
       if (wc) {
@@ -153,6 +153,16 @@ cp932_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
 {
   unsigned char buf[2];
   int ret;
+
+#if defined(USE_MS932)
+  if (wc == 0xffe2) {
+    if (n < 2)
+      return RET_TOOSMALL;
+    r[0] = 0x81;
+    r[1] = 0xca;
+    return 2;
+  }
+#endif
 
   /* Try ASCII. */
   ret = ascii_wctomb(conv,buf,wc,1);
@@ -256,16 +266,6 @@ cp932_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, int n)
     r[1] = 0x92;
     return 2;
   }
-
-#if defined(USE_MS932)
-  if (wc == 0xffe2) {
-    if (n < 2)
-      return RET_TOOSMALL;
-    r[0] = 0x81;
-    r[1] = 0xca;
-    return 2;
-  }
-#endif
 
   return RET_ILUNI;
 }
