@@ -173,11 +173,12 @@ test_compile : $(TEST_EXES)
 
 test1 : table-from.exe table-to.exe uniq-u.exe genutf8.exe
 	check-stateless.bat $(TESTDIR) ASCII
+
+# General multi-byte encodings
+test2 : iconv_no_i18n.exe
 	genutf8 > UTF-8.TXT && \
 	  check-stateless.bat . UTF-8 && \
 	  DEL /F UTF-8.TXT
-
-test2 : iconv_no_i18n.exe
 	check-stateful.bat $(TESTDIR) UCS-2BE
 	check-stateful.bat $(TESTDIR) UCS-2LE
 	check-stateful.bat $(TESTDIR) UCS-4BE
@@ -190,6 +191,7 @@ test2 : iconv_no_i18n.exe
 	check-stateful.bat $(TESTDIR) UTF-32LE
 	check-stateful.bat $(TESTDIR) UTF-7
 
+# 8-bit encodings
 test3 : $(TESTS3)
 
 test3a : table-from.exe table-to.exe uniq-u.exe
@@ -261,6 +263,7 @@ test3d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) TCVN
 	check-stateful.bat $(TESTDIR) TCVN
 
+# CJK character sets
 test4 : $(TESTS4)
 
 test4a : table-from.exe table-to.exe uniq-u.exe
@@ -269,6 +272,7 @@ test4a : table-from.exe table-to.exe uniq-u.exe
 	check-stateless.bat $(TESTDIR) ISO646-CN
 	check-stateless.bat $(TESTDIR) ISO-IR-165
 
+# CJK encodings
 test4b : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) EUC-JP
 	check-stateless.bat $(TESTDIR) SHIFT_JIS
@@ -308,6 +312,7 @@ test4d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) JOHAB
 	check-stateful.bat $(TESTDIR) ISO-2022-KR
 
+# system dependent and extra encodings
 test5 : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) CP856
 	check-stateless.bat $(TESTDIR) CP922
@@ -342,6 +347,7 @@ test5 : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) ATARIST
 	check-stateless.bat $(TESTDIR) RISCOS-LATIN1
 
+# transliteration
 test6 : iconv_no_i18n.exe
 	check-translit.bat $(TESTDIR) Quotes UTF-8 ISO-8859-1
 	check-translit.bat $(TESTDIR) Quotes UTF-8 ASCII
@@ -349,10 +355,12 @@ test6 : iconv_no_i18n.exe
 # TODO: port check-translitfailure test.
 #	check-translitfailure.bat $(TESTDIR) TranslitFail1 ISO-8859-1 ASCII
 
+# substitution
 test7 :
 # TODO: port check-subst test.
 #	check-subst.bat
 
+# others
 test8 : test-shiftseq.exe test-to-wchar.exe
 	test-shiftseq
 	test-to-wchar
