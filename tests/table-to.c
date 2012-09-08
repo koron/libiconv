@@ -46,7 +46,7 @@ int main (int argc, char* argv[])
 #endif
 
   cd = iconv_open(charset,"UCS-4-INTERNAL");
-  if (cd == (iconv_t)(-1)) {
+  if (cd == (iconv_t)(ptrdiff_t)(-1)) {
     perror("iconv_open");
     exit(1);
   }
@@ -80,7 +80,7 @@ int main (int argc, char* argv[])
         }
       } else if (result == 0) /* ignore conversions with transliteration */ {
         if (inbytesleft == 0 && outbytesleft < sizeof(buf)) {
-          unsigned int jmax = sizeof(buf) - outbytesleft;
+          unsigned int jmax = (unsigned int)(sizeof(buf) - outbytesleft);
           unsigned int j;
           printf("0x");
           for (j = 0; j < jmax; j++)
