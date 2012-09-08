@@ -34,7 +34,7 @@ clean :
 	-DEL /F /Q *.obj
 	-DEL /F /Q *.pdb
 
-distclean :
+distclean : clean
 	-DEL /F tags
 	-DEL /F tmp-*.TXT
 
