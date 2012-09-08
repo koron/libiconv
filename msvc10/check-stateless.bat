@@ -14,7 +14,9 @@ if not exist %1\%2.IRREVERSIBLE.TXT goto ELSE_1
   del tmp-orig-%2.INVERSE.TXT
   goto ENDIF_1
 :ELSE_1
-  fc %1\%2.TXT tmp-%2.INVERSE.TXT
+  sort < %1\%2.TXT | uniq-u > tmp-orig-%2.INVERSE.TXT
+  fc tmp-orig-%2.INVERSE.TXT tmp-%2.INVERSE.TXT
+  del tmp-orig-%2.INVERSE.TXT
 :ENDIF_1
 
 del tmp-%2.TXT

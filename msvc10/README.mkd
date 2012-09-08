@@ -13,8 +13,11 @@
       * check-stateful.bat $(TESTDIR) BIG5-HKSCS-2008
     * test5d
       * check-stateless.bat $(TESTDIR) EUC-JISX0213
+        * table-to から出力されないエントリがある
       * check-stateless.bat $(TESTDIR) SHIFT_JISX0213
+        * table-to から出力されないエントリがある
       * check-stateful.bat $(TESTDIR) ISO-2022-JP-3
+        * UTF-8 -> ISO-2022-JP-3 がオカシイ
   * tests insufficient
     * test6
     * test7
