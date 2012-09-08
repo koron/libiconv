@@ -355,7 +355,9 @@ test5c : table-from.exe table-to.exe uniq-u.exe
 # Extra encodings
 test5d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) EUC-JISX0213
+	check-stateful.bat $(TESTDIR) EUC-JISX0213
 	check-stateless.bat $(TESTDIR) SHIFT_JISX0213
+	check-stateful.bat $(TESTDIR) SHIFT_JISX0213
 	check-stateful.bat $(TESTDIR) ISO-2022-JP-3
 	check-stateless.bat $(TESTDIR) BIG5-2003
 	check-stateless.bat $(TESTDIR) TDS565
