@@ -22,13 +22,12 @@ if not exist %1\%fname%.IRREVERSIBLE.TXT goto ELSE_1
   sort < tmp | uniq-u > tmp-orig-%fname%.INVERSE.TXT
   fc tmp-orig-%fname%.INVERSE.TXT tmp-%fname%.INVERSE.TXT
   del tmp
-  del tmp-orig-%fname%.INVERSE.TXT
   goto ENDIF_1
 :ELSE_1
   sort < %inverse% | uniq-u > tmp-orig-%fname%.INVERSE.TXT
   fc tmp-orig-%fname%.INVERSE.TXT tmp-%fname%.INVERSE.TXT
-  del tmp-orig-%fname%.INVERSE.TXT
 :ENDIF_1
 
+del tmp-orig-%fname%.INVERSE.TXT
 del tmp-%fname%.TXT
 del tmp-%fname%.INVERSE.TXT
