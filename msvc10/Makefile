@@ -163,8 +163,9 @@ TESTS3 = test3a test3b test3c test3d
 TESTS4 = test4a test4b test4c test4d
 TESTS5 = test5a test5b test5c test5d
 
-TEST_EXES =	table-from.exe table-to.exe test-shiftseq.exe \
-		test-to-wchar.exe genutf8.exe gengb18030z.exe uniq-u.exe
+TEST_EXES =	iconv_no_i18n.exe table-from.exe table-to.exe \
+		test-shiftseq.exe test-to-wchar.exe \
+		genutf8.exe gengb18030z.exe uniq-u.exe
 
 TESTDIR =	..\tests
 
