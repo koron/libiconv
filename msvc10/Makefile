@@ -303,14 +303,14 @@ test4d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) EUC-TW
 	check-stateless.bat $(TESTDIR) BIG5
 	check-stateless.bat $(TESTDIR) CP950
-	check-stateless.bat $(TESTDIR) BIG5-HKSCS-1999
-	check-stateful.bat $(TESTDIR) BIG5-HKSCS-1999
-	check-stateless.bat $(TESTDIR) BIG5-HKSCS-2001
-	check-stateful.bat $(TESTDIR) BIG5-HKSCS-2001
-	check-stateless.bat $(TESTDIR) BIG5-HKSCS-2004
-	check-stateful.bat $(TESTDIR) BIG5-HKSCS-2004
-	check-stateless.bat $(TESTDIR) BIG5-HKSCS-2008
-	check-stateful.bat $(TESTDIR) BIG5-HKSCS-2008
+	check-stateless.bat $(TESTDIR) BIG5-HKSCS:1999
+	check-stateful.bat $(TESTDIR) BIG5-HKSCS:1999
+	check-stateless.bat $(TESTDIR) BIG5-HKSCS:2001
+	check-stateful.bat $(TESTDIR) BIG5-HKSCS:2001
+	check-stateless.bat $(TESTDIR) BIG5-HKSCS:2004
+	check-stateful.bat $(TESTDIR) BIG5-HKSCS:2004
+	check-stateless.bat $(TESTDIR) BIG5-HKSCS:2008
+	check-stateful.bat $(TESTDIR) BIG5-HKSCS:2008
 	check-stateless.bat $(TESTDIR) EUC-KR
 	check-stateless.bat $(TESTDIR) CP949
 	check-stateless.bat $(TESTDIR) JOHAB
