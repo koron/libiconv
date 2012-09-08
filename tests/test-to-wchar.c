@@ -29,7 +29,7 @@
 int main ()
 {
   iconv_t cd = iconv_open ("wchar_t", "UTF-8");
-  if (cd == (iconv_t)(-1)) {
+  if (cd == (iconv_t)(ptrdiff_t)(-1)) {
     /* Skip the test on platforms without wchar_t
       (Solaris 2.6, HP-UX 11.00).  */
   } else {

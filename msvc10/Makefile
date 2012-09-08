@@ -157,12 +157,19 @@ uniq-u.obj : ..\tests\uniq-u.c
 ############################################################################
 # TESTS
 
-TESTS =	test1 test2 test3a test3b test3c test3d test4a test4b test4c test4d \
-	test5 test6 test7 test8
+TESTS =	test1 test2 $(TESTS3) $(TESTS4) test5 test6 test7 test8
+
+TESTS3 = test3a test3b test3c test3d 
+TESTS4 = test4a test4b test4c test4d
+
+TEST_EXES =	table-from.exe table-to.exe test-shiftseq.exe \
+		test-to-wchar.exe genutf8.exe gengb18030z.exe uniq-u.exe
 
 TESTDIR =	..\tests
 
 test : $(TESTS)
+
+test_compile : $(TEST_EXES)
 
 test1 : table-from.exe table-to.exe uniq-u.exe genutf8.exe
 	check-stateless.bat $(TESTDIR) ASCII
@@ -182,6 +189,8 @@ test2 : iconv_no_i18n.exe
 	check-stateful.bat $(TESTDIR) UTF-32BE
 	check-stateful.bat $(TESTDIR) UTF-32LE
 	check-stateful.bat $(TESTDIR) UTF-7
+
+test3 : $(TESTS3)
 
 test3a : table-from.exe table-to.exe uniq-u.exe
 	check-stateless.bat $(TESTDIR) ISO-8859-1
@@ -251,6 +260,8 @@ test3d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) VISCII
 	check-stateless.bat $(TESTDIR) TCVN
 	check-stateful.bat $(TESTDIR) TCVN
+
+test4 : $(TESTS4)
 
 test4a : table-from.exe table-to.exe uniq-u.exe
 	check-stateless.bat $(TESTDIR) ISO646-JP

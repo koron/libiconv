@@ -75,7 +75,7 @@ static int try (iconv_t cd, unsigned char buf[], unsigned int buflen, unsigned i
       fprintf(stderr,"%s: inbytes = %ld, outbytes = %ld\n",hexbuf(buf,buflen),(long)(buflen-inbytesleft),(long)(3*sizeof(unsigned int)-outbytesleft));
       exit(1);
     }
-    return (3*sizeof(unsigned int)-outbytesleft)/sizeof(unsigned int);
+    return (int)((3*sizeof(unsigned int)-outbytesleft)/sizeof(unsigned int));
   }
 }
 
@@ -113,7 +113,7 @@ int main (int argc, char* argv[])
 #endif
 
   cd = iconv_open("UCS-4-INTERNAL",charset);
-  if (cd == (iconv_t)(-1)) {
+  if (cd == (iconv_t)(ptrdiff_t)(-1)) {
     perror("iconv_open");
     exit(1);
   }
@@ -129,7 +129,7 @@ int main (int argc, char* argv[])
     unsigned int i0, i1, i2, i3;
     int result;
     for (i0 = 0; i0 < 0x100; i0++) {
-      buf[0] = i0;
+      buf[0] = (unsigned char)i0;
       result = try(cd,buf,1,out);
       if (result < 0) {
       } else if (result > 0) {
@@ -138,7 +138,7 @@ int main (int argc, char* argv[])
           printf("0x%02X\t%s\n",i0,unicode);
       } else {
         for (i1 = 0; i1 < 0x100; i1++) {
-          buf[1] = i1;
+          buf[1] = (unsigned char)i1;
           result = try(cd,buf,2,out);
           if (result < 0) {
           } else if (result > 0) {
@@ -147,7 +147,7 @@ int main (int argc, char* argv[])
               printf("0x%02X%02X\t%s\n",i0,i1,unicode);
           } else {
             for (i2 = 0; i2 < 0x100; i2++) {
-              buf[2] = i2;
+              buf[2] = (unsigned char)i2;
               result = try(cd,buf,3,out);
               if (result < 0) {
               } else if (result > 0) {
@@ -156,7 +156,7 @@ int main (int argc, char* argv[])
                   printf("0x%02X%02X%02X\t%s\n",i0,i1,i2,unicode);
               } else if (search_depth > 3) {
                 for (i3 = 0; i3 < 0x100; i3++) {
-                  buf[3] = i3;
+                  buf[3] = (unsigned char)i3;
                   result = try(cd,buf,4,out);
                   if (result < 0) {
                   } else if (result > 0) {
