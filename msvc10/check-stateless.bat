@@ -2,22 +2,25 @@
 REM Complete check of a stateless encoding.
 REM Usage: check-stateless.bat SRCDIR CHARSET
 
-.\table-from %2 > tmp-%2.TXT
-.\table-to %2 | sort > tmp-%2.INVERSE.TXT
-fc %1\%2.TXT tmp-%2.TXT
+SET fname=%2
+SET fname=%fname::=-%
 
-if not exist %1\%2.IRREVERSIBLE.TXT goto ELSE_1
-  copy /B %1\%2.TXT /B + %1\%2.IRREVERSIBLE.TXT /B tmp
-  sort < tmp | uniq-u > tmp-orig-%2.INVERSE.TXT
-  fc tmp-orig-%2.INVERSE.TXT tmp-%2.INVERSE.TXT
-  del tmp
-  del tmp-orig-%2.INVERSE.TXT
+.\table-from %2 > tmp-%fname%.TXT
+.\table-to %2 | sort > tmp-%fname%.INVERSE.TXT
+fc %1\%fname%.TXT tmp-%fname%.TXT
+
+if not exist %1\%fname%.IRREVERSIBLE.TXT goto ELSE_1
+  copy /B %1\%fname%.TXT /B + %1\%fname%.IRREVERSIBLE.TXT /B tmp
+  sort < tmp | uniq-u > tmp-orig-%fname%.INVERSE.TXT
+  fc tmp-orig-%fname%.INVERSE.TXT tmp-%fname%.INVERSE.TXT
+  REM del tmp
+  REM del tmp-orig-%fname%.INVERSE.TXT
   goto ENDIF_1
 :ELSE_1
-  sort < %1\%2.TXT | uniq-u > tmp-orig-%2.INVERSE.TXT
-  fc tmp-orig-%2.INVERSE.TXT tmp-%2.INVERSE.TXT
-  del tmp-orig-%2.INVERSE.TXT
+  sort < %1\%fname%.TXT | uniq-u > tmp-orig-%fname%.INVERSE.TXT
+  fc tmp-orig-%fname%.INVERSE.TXT tmp-%fname%.INVERSE.TXT
+  REM del tmp-orig-%fname%.INVERSE.TXT
 :ENDIF_1
 
-del tmp-%2.TXT
-del tmp-%2.INVERSE.TXT
+REM del tmp-%fname%.TXT
+REM del tmp-%fname%.INVERSE.TXT

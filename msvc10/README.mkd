@@ -4,13 +4,9 @@
     * test4c (GB18030)
     * test4d
       * check-stateless.bat $(TESTDIR) BIG5-HKSCS-1999
-      * check-stateful.bat $(TESTDIR) BIG5-HKSCS-1999
       * check-stateless.bat $(TESTDIR) BIG5-HKSCS-2001
-      * check-stateful.bat $(TESTDIR) BIG5-HKSCS-2001
       * check-stateless.bat $(TESTDIR) BIG5-HKSCS-2004
-      * check-stateful.bat $(TESTDIR) BIG5-HKSCS-2004
       * check-stateless.bat $(TESTDIR) BIG5-HKSCS-2008
-      * check-stateful.bat $(TESTDIR) BIG5-HKSCS-2008
     * test5d
       * check-stateless.bat $(TESTDIR) EUC-JISX0213
         * table-to から出力されないエントリがある
