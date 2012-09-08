@@ -7,7 +7,7 @@ REM Usage: check-stateless.bat SRCDIR CHARSET
 fc %1\%2.TXT tmp-%2.TXT
 
 if not exist %1\%2.IRREVERSIBLE.TXT goto ELSE_1
-  copy /a %1\%2.TXT /a + %1\%2.IRREVERSIBLE.TXT /a tmp
+  copy /B %1\%2.TXT /B + %1\%2.IRREVERSIBLE.TXT /B tmp
   sort < tmp | uniq-u > tmp-orig-%2.INVERSE.TXT
   fc tmp-orig-%2.INVERSE.TXT tmp-%2.INVERSE.TXT
   del tmp

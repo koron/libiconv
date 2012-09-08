@@ -157,10 +157,11 @@ uniq-u.obj : ..\tests\uniq-u.c
 ############################################################################
 # TESTS
 
-TESTS =	test1 test2 $(TESTS3) $(TESTS4) test5 test6 test7 test8
+TESTS =	test1 test2 $(TESTS3) $(TESTS4) $(TESTS5) test6 test7 test8
 
 TESTS3 = test3a test3b test3c test3d 
 TESTS4 = test4a test4b test4c test4d
+TESTS5 = test5a test5b test5c test5d
 
 TEST_EXES =	table-from.exe table-to.exe test-shiftseq.exe \
 		test-to-wchar.exe genutf8.exe gengb18030z.exe uniq-u.exe
@@ -313,7 +314,10 @@ test4d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateful.bat $(TESTDIR) ISO-2022-KR
 
 # system dependent and extra encodings
-test5 : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
+test5 : $(TESTS5)
+
+# AIX specific encodings
+test5a : table-from.exe table-to.exe uniq-u.exe
 	check-stateless.bat $(TESTDIR) CP856
 	check-stateless.bat $(TESTDIR) CP922
 	check-stateless.bat $(TESTDIR) CP1046
@@ -322,8 +326,13 @@ test5 : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) CP1161
 	check-stateless.bat $(TESTDIR) CP1162
 	check-stateless.bat $(TESTDIR) CP1163
+
+# OSF/1 specific encodings
+test5b : table-from.exe table-to.exe uniq-u.exe
 	check-stateless.bat $(TESTDIR) DEC-KANJI
 	check-stateless.bat $(TESTDIR) DEC-HANYU
+
+test5c : table-from.exe table-to.exe uniq-u.exe
 	check-stateless.bat $(TESTDIR) CP437
 	check-stateless.bat $(TESTDIR) CP737
 	check-stateless.bat $(TESTDIR) CP775
@@ -339,6 +348,9 @@ test5 : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) CP865
 	check-stateless.bat $(TESTDIR) CP869
 	check-stateless.bat $(TESTDIR) CP1125
+
+# Extra encodings
+test5d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) EUC-JISX0213
 	check-stateless.bat $(TESTDIR) SHIFT_JISX0213
 	check-stateful.bat $(TESTDIR) ISO-2022-JP-3
