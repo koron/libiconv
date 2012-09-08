@@ -288,12 +288,14 @@ test4b : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 
 # CJK encodings (GB18030)
 test4c : table-from.exe table-to.exe uniq-u.exe gengb18030z.exe
-	copy $(TESTDIR)\GB18030-BMP.TXT GB18030-TMP.TXT
+	COPY $(TESTDIR)\GB18030-BMP.TXT GB18030-TMP.TXT
+	COPY $(TESTDIR)\GB18030.IRREVERSIBLE.TXT GB18030.IRREVERSIBLE.TXT
 	gengb18030z >> GB18030-TMP.TXT
 	sort GB18030-TMP.TXT > GB18030.TXT
 	-DEL /F GB18030-TMP.TXT
 	check-stateless.bat . GB18030
 	-DEL /F GB18030.TXT
+	-DEL /F GB18030.IRREVERSIBLE.TXT
 
 # CJK encodings (others)
 test4d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
