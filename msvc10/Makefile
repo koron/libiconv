@@ -285,6 +285,7 @@ test4b : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateless.bat $(TESTDIR) GBK
 	check-stateless.bat $(TESTDIR) CP936
 
+# CJK encodings (GB18030)
 test4c : table-from.exe table-to.exe uniq-u.exe gengb18030z.exe
 	copy $(TESTDIR)\GB18030-BMP.TXT GB18030-TMP.TXT
 	gengb18030z >> GB18030-TMP.TXT
@@ -293,6 +294,7 @@ test4c : table-from.exe table-to.exe uniq-u.exe gengb18030z.exe
 	check-stateless.bat . GB18030
 	-DEL /F GB18030.TXT
 
+# CJK encodings (others)
 test4d : table-from.exe table-to.exe uniq-u.exe iconv_no_i18n.exe
 	check-stateful.bat $(TESTDIR) ISO-2022-CN
 	check-stateful.bat $(TESTDIR) ISO-2022-CN-EXT

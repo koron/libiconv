@@ -1,0 +1,9 @@
+# KNOWN PROBLEMS
+
+  * tests failure
+    * test4c
+    * test4d
+    * test5d
+  * tests insufficient
+    * test6
+    * test7
