@@ -6,6 +6,14 @@ OUTPUTS =	libiconv.dll iconv_no_i18n.exe
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 		/D_CRT_SECURE_NO_WARNINGS=1
 
+DEFINES_LIBICONV = \
+	/DBUILDING_LIBICONV=1 \
+	/DBUILDING_DLL=1 \
+	/DPIC=1 \
+	/DNO_XMALLOC=1 \
+	/Dset_relocation_prefix=libiconv_set_relocation_prefix \
+	/Drelocate=libiconv_relocate
+
 INCLUDES =	-I. -I..\srclib
 
 CCFLAGS =	/wd 4100 /wd 4819 /wd 4127 $(INCLUDES) $(DEFINES)
@@ -44,7 +52,7 @@ distclean : clean
 
 ### libiconv.dll
 
-OBJS_LIBICONV_DLL = libiconv.obj localcharset.obj
+OBJS_LIBICONV_DLL = libiconv.obj relocatable.obj localcharset.obj
 
 libiconv.dll : $(OBJS_LIBICONV_DLL)
 	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
@@ -52,12 +60,17 @@ libiconv.dll : $(OBJS_LIBICONV_DLL)
 
 libiconv.obj : ..\lib\iconv.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
-		/DBUILDING_LIBICONV=1 \
+		$(DEFINES_LIBICONV) \
 		/Fo$@ /c ..\lib\iconv.c
+
+relocatable.obj : ..\lib\relocatable.c
+	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+		$(DEFINES_LIBICONV) \
+		/Fo$@ /c ..\lib\relocatable.c
 
 localcharset.obj : ..\libcharset\lib\localcharset.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
-		/DBUILDING_LIBICONV=1 \
+		$(DEFINES_LIBICONV) \
 		/Fo$@ /c ..\libcharset\lib\localcharset.c
 
 ### iconv_no_i18n.exe

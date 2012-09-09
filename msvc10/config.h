@@ -34,7 +34,7 @@
 #undef ENABLE_NLS
 
 /* Define to 1 if the package shall run at any location in the file system. */
-#undef ENABLE_RELOCATABLE
+#define ENABLE_RELOCATABLE 1
 
 /* Define to 1 if realpath() can malloc memory, always gives an absolute path,
    and handles trailing slash correctly. */
