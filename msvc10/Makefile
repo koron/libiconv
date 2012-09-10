@@ -12,7 +12,8 @@ DEFINES_LIBICONV = \
 	/DPIC=1 \
 	/DNO_XMALLOC=1 \
 	/Dset_relocation_prefix=libiconv_set_relocation_prefix \
-	/Drelocate=libiconv_relocate
+	/Drelocate=libiconv_relocate \
+	/DUSE_MS932=1
 
 INCLUDES =	-I. -I..\srclib
 
