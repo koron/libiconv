@@ -1,7 +1,7 @@
 #  Build debug version:		nmake
 #  Build release version:	nmake nodebug=1
 
-OUTPUTS =	libiconv.dll iconv_no_i18n.exe
+OUTPUTS =	iconv.dll iconv_no_i18n.exe
 
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 		/D_CRT_SECURE_NO_WARNINGS=1
@@ -51,15 +51,15 @@ distclean : clean
 
 ############################################################################
 
-### libiconv.dll
+### iconv.dll
 
-OBJS_LIBICONV_DLL = libiconv.obj relocatable.obj localcharset.obj
+OBJS_LIBICONV_DLL = lib_iconv.obj relocatable.obj localcharset.obj
 
-libiconv.dll : $(OBJS_LIBICONV_DLL)
+iconv.dll : $(OBJS_LIBICONV_DLL)
 	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
 		/OUT:$@ $(OBJS_LIBICONV_DLL)
 
-libiconv.obj : ..\lib\iconv.c
+lib_iconv.obj : ..\lib\iconv.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
 		$(DEFINES_LIBICONV) \
 		/Fo$@ /c ..\lib\iconv.c
@@ -78,9 +78,9 @@ localcharset.obj : ..\libcharset\lib\localcharset.c
 
 OBJS_ICONV_NO_I18N_EXE = iconv_no_i18n.obj progname.obj width.obj safe-read.obj
 
-iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) libiconv.dll
+iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) iconv.dll
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) libiconv.lib
+		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) iconv.lib
 
 iconv_no_i18n.obj : ..\src\iconv_no_i18n.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
@@ -100,9 +100,9 @@ safe-read.obj : ..\srclib\safe-read.c
 
 ### table-from.exe
 
-table-from.exe : table-from.obj libiconv.dll
+table-from.exe : table-from.obj iconv.dll
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ table-from.obj libiconv.lib
+		/OUT:$@ table-from.obj iconv.lib
 
 table-from.obj : ..\tests\table-from.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
@@ -110,9 +110,9 @@ table-from.obj : ..\tests\table-from.c
 
 ### table-to.exe
 
-table-to.exe : table-to.obj libiconv.dll
+table-to.exe : table-to.obj iconv.dll
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ table-to.obj libiconv.lib
+		/OUT:$@ table-to.obj iconv.lib
 
 table-to.obj : ..\tests\table-to.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
@@ -120,9 +120,9 @@ table-to.obj : ..\tests\table-to.c
 
 ### test-shiftseq.exe
 
-test-shiftseq.exe : test-shiftseq.obj libiconv.dll
+test-shiftseq.exe : test-shiftseq.obj iconv.dll
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ test-shiftseq.obj libiconv.lib
+		/OUT:$@ test-shiftseq.obj iconv.lib
 
 test-shiftseq.obj : ..\tests\test-shiftseq.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
@@ -130,9 +130,9 @@ test-shiftseq.obj : ..\tests\test-shiftseq.c
 
 ### test-to-wchar.exe
 
-test-to-wchar.exe : test-to-wchar.obj libiconv.dll
+test-to-wchar.exe : test-to-wchar.obj iconv.dll
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
-		/OUT:$@ test-to-wchar.obj libiconv.lib
+		/OUT:$@ test-to-wchar.obj iconv.lib
 
 test-to-wchar.obj : ..\tests\test-to-wchar.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
