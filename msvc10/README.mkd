@@ -1,3 +1,25 @@
+## Build and Test and Clean
+
+To build release version:
+
+    > nmake NODEBUG=1
+
+To build debug version:
+
+    > nmake
+
+To test and check:
+
+    > nmake check
+
+To clean generate files:
+
+    > nmake clean
+
+To clean all generate files:
+
+    > nmake distclean
+
 # KNOWN PROBLEMS
 
   * tests failure
