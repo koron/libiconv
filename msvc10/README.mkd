@@ -22,20 +22,6 @@ To clean all generate files:
 
 # KNOWN PROBLEMS
 
-  * tests failure
-    * test4c (GB18030)
-    * test4d
-      * check-stateless.bat $(TESTDIR) BIG5-HKSCS-1999
-      * check-stateless.bat $(TESTDIR) BIG5-HKSCS-2001
-      * check-stateless.bat $(TESTDIR) BIG5-HKSCS-2004
-      * check-stateless.bat $(TESTDIR) BIG5-HKSCS-2008
-    * test5d
-      * check-stateless.bat $(TESTDIR) EUC-JISX0213
-        * table-to から出力されないエントリがある
-      * check-stateless.bat $(TESTDIR) SHIFT_JISX0213
-        * table-to から出力されないエントリがある
-      * check-stateful.bat $(TESTDIR) ISO-2022-JP-3
-        * UTF-8 -> ISO-2022-JP-3 がオカシイ
-  * tests insufficient
+  * Insufficient tests
     * test6
     * test7
