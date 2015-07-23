@@ -1,7 +1,7 @@
 #  Build debug version:		nmake
 #  Build release version:	nmake nodebug=1
 
-OUTPUTS =	iconv.dll iconv_no_i18n.exe
+OUTPUTS =	iconv.lib iconv_no_i18n.exe
 
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 		/D_CRT_SECURE_NO_WARNINGS=1
@@ -18,6 +18,10 @@ DEFINES_LIBICONV = \
 INCLUDES =	-I. -I..\srclib
 
 CCFLAGS =	/wd 4100 /wd 4819 /wd 4127 $(INCLUDES) $(DEFINES)
+
+!ifdef STATIC_LIBICONV
+CCFLAGS =	$(CCFLAGS) /DSTATIC_LIBICONV
+!endif
 
 ############################################################################
 # WINDOWS BUILD SETTINGS.
@@ -55,9 +59,16 @@ distclean : clean
 
 OBJS_LIBICONV_DLL = lib_iconv.obj relocatable.obj localcharset.obj
 
+!ifdef STATIC_LIBICONV
+iconv.lib : $(OBJS_LIBICONV_DLL)
+	LIB /NOLOGO /OUT:$@ $(OBJS_LIBICONV_DLL)
+!else
+iconv.lib : iconv.dll
+
 iconv.dll : $(OBJS_LIBICONV_DLL)
 	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
 		/OUT:$@ $(OBJS_LIBICONV_DLL)
+!endif
 
 lib_iconv.obj : ..\lib\iconv.c
 	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
@@ -78,7 +89,7 @@ localcharset.obj : ..\libcharset\lib\localcharset.c
 
 OBJS_ICONV_NO_I18N_EXE = iconv_no_i18n.obj progname.obj width.obj safe-read.obj
 
-iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) iconv.dll
+iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) iconv.lib
 	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
 		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) iconv.lib
 

@@ -22,7 +22,9 @@
 #define _LIBICONV_H
 
 #define _LIBICONV_VERSION 0x010E    /* version number: (major<<8) + minor */
-#ifdef BUILDING_LIBICONV
+#ifdef STATIC_LIBICONV
+#define LIBICONV_DLL_EXPORTED
+#elif defined(BUILDING_LIBICONV)
 #define LIBICONV_DLL_EXPORTED __declspec(dllexport)
 #else
 #define LIBICONV_DLL_EXPORTED __declspec(dllimport)
