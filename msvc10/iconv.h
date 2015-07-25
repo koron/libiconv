@@ -27,6 +27,11 @@
 #else
 #define LIBICONV_DLL_EXPORTED __declspec(dllimport)
 #endif
+/* Just remove LIBICONV_DLL_EXPORTED for static library. */
+#ifdef STATIC_LIBICONV
+# undef  LIBICONV_DLL_EXPORTED
+# define LIBICONV_DLL_EXPORTED
+#endif
 extern LIBICONV_DLL_EXPORTED int _libiconv_version;       /* Likewise */
 
 /* We would like to #include any system header file which could define

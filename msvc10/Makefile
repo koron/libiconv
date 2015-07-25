@@ -1,14 +1,23 @@
+# USAGE:
+#
 #  Build debug version:		nmake
 #  Build release version:	nmake nodebug=1
+#
+#  Build without MSVCRT: 	nmake nomsvcrt=1
+#  Build release version without MSVCRT:
+#  				nmake nodebug=1 nomsvcrt=1
+#
+#  Build static link library:	nmake nodll=1
+#  Build release version of static link library without MSVCRT:
+#  				nmake nodebug=1 nomsvcrt=1 nodll=1
 
-OUTPUTS =	iconv.dll iconv_no_i18n.exe
+OUTPUTS =	iconv.lib iconv_no_i18n.exe
 
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 		/D_CRT_SECURE_NO_WARNINGS=1
 
 DEFINES_LIBICONV = \
 	/DBUILDING_LIBICONV=1 \
-	/DBUILDING_DLL=1 \
 	/DPIC=1 \
 	/DNO_XMALLOC=1 \
 	/Dset_relocation_prefix=libiconv_set_relocation_prefix \
@@ -27,6 +36,21 @@ TARGET = WINNT
 TARGETLANG = LANG_JAPANESE
 
 !INCLUDE <Win32.Mak>
+
+!IFDEF NODLL
+CCFLAGS = $(CCFLAGS) /DSTATIC_LIBICONV
+!ENDIF
+
+!IFDEF NOMSVCRT
+_CVARS = $(cvarsmt)
+_LIBS_EXE = $(guilibsmt)
+_LIBS_DLL = $(conlibsmt)
+!ELSE
+DEFINES_LIBICONV = $(DEFINES_LIBICONV) /DBUILDING_DLL=1
+_CVARS = $(cvarsdll)
+_LIBS_EXE = $(guilibsdll)
+_LIBS_DLL = $(conlibsdll)
+!ENDIF
 
 build : $(OUTPUTS)
 
@@ -55,22 +79,29 @@ distclean : clean
 
 OBJS_LIBICONV_DLL = lib_iconv.obj relocatable.obj localcharset.obj
 
+!IFDEF NODLL
+iconv.lib : $(OBJS_LIBICONV_DLL)
+	LIB /NOLOGO /OUT:$@ $(OBJS_LIBICONV_DLL)
+!ELSE
+iconv.lib : iconv.dll
+
 iconv.dll : $(OBJS_LIBICONV_DLL)
-	$(link) /NOLOGO $(ldebug) $(dlllflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(dlllflags) $(_LIBS_DLL) $(LFLAGS) \
 		/OUT:$@ $(OBJS_LIBICONV_DLL)
+!ENDIF
 
 lib_iconv.obj : ..\lib\iconv.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		$(DEFINES_LIBICONV) \
 		/Fo$@ /c ..\lib\iconv.c
 
 relocatable.obj : ..\lib\relocatable.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		$(DEFINES_LIBICONV) \
 		/Fo$@ /c ..\lib\relocatable.c
 
 localcharset.obj : ..\libcharset\lib\localcharset.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		$(DEFINES_LIBICONV) \
 		/Fo$@ /c ..\libcharset\lib\localcharset.c
 
@@ -78,94 +109,94 @@ localcharset.obj : ..\libcharset\lib\localcharset.c
 
 OBJS_ICONV_NO_I18N_EXE = iconv_no_i18n.obj progname.obj width.obj safe-read.obj
 
-iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) iconv.dll
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+iconv_no_i18n.exe : $(OBJS_ICONV_NO_I18N_EXE) iconv.lib
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ $(OBJS_ICONV_NO_I18N_EXE) iconv.lib
 
 iconv_no_i18n.obj : ..\src\iconv_no_i18n.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\src\iconv_no_i18n.c
 
 progname.obj : ..\srclib\progname.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\srclib\progname.c
 
 width.obj : ..\srclib\uniwidth\width.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\srclib\uniwidth\width.c
 
 safe-read.obj : ..\srclib\safe-read.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\srclib\safe-read.c
 
 ### table-from.exe
 
 table-from.exe : table-from.obj iconv.dll
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ table-from.obj iconv.lib
 
 table-from.obj : ..\tests\table-from.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\table-from.c
 
 ### table-to.exe
 
 table-to.exe : table-to.obj iconv.dll
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ table-to.obj iconv.lib
 
 table-to.obj : ..\tests\table-to.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\table-to.c
 
 ### test-shiftseq.exe
 
 test-shiftseq.exe : test-shiftseq.obj iconv.dll
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ test-shiftseq.obj iconv.lib
 
 test-shiftseq.obj : ..\tests\test-shiftseq.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\test-shiftseq.c
 
 ### test-to-wchar.exe
 
 test-to-wchar.exe : test-to-wchar.obj iconv.dll
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ test-to-wchar.obj iconv.lib
 
 test-to-wchar.obj : ..\tests\test-to-wchar.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\test-to-wchar.c
 
 ### genutf8.exe
 
 genutf8.exe : genutf8.obj
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ genutf8.obj
 
 genutf8.obj : ..\tests\genutf8.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\genutf8.c
 
 ### gengb18030z.exe
 
 gengb18030z.exe : gengb18030z.obj
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ gengb18030z.obj
 
 gengb18030z.obj : ..\tests\gengb18030z.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\gengb18030z.c
 
 ### uniq-u.exe
 
 uniq-u.exe : uniq-u.obj
-	$(link) /NOLOGO $(ldebug) $(conlflags) $(conlibsdll) $(LFLAGS) \
+	$(link) /NOLOGO $(ldebug) $(conlflags) $(_LIBS_EXE) $(LFLAGS) \
 		/OUT:$@ uniq-u.obj
 
 uniq-u.obj : ..\tests\uniq-u.c
-	$(CC) $(cdebug) $(cflags) $(cvarsdll) $(CCFLAGS) \
+	$(CC) $(cdebug) $(cflags) $(_CVARS) $(CCFLAGS) \
 		/Fo$@ /c ..\tests\uniq-u.c
 
 ############################################################################
