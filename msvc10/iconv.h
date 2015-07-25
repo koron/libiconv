@@ -22,12 +22,15 @@
 #define _LIBICONV_H
 
 #define _LIBICONV_VERSION 0x010E    /* version number: (major<<8) + minor */
-#ifdef STATIC_LIBICONV
-#define LIBICONV_DLL_EXPORTED
-#elif defined(BUILDING_LIBICONV)
+#ifdef BUILDING_LIBICONV
 #define LIBICONV_DLL_EXPORTED __declspec(dllexport)
 #else
 #define LIBICONV_DLL_EXPORTED __declspec(dllimport)
+#endif
+/* Just remove LIBICONV_DLL_EXPORTED for static library. */
+#ifdef STATIC_LIBICONV
+# undef  LIBICONV_DLL_EXPORTED
+# define LIBICONV_DLL_EXPORTED
 #endif
 extern LIBICONV_DLL_EXPORTED int _libiconv_version;       /* Likewise */
 

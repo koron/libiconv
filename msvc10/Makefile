@@ -18,7 +18,6 @@ DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
 
 DEFINES_LIBICONV = \
 	/DBUILDING_LIBICONV=1 \
-	/DBUILDING_DLL=1 \
 	/DPIC=1 \
 	/DNO_XMALLOC=1 \
 	/Dset_relocation_prefix=libiconv_set_relocation_prefix \
@@ -47,6 +46,7 @@ _CVARS = $(cvarsmt)
 _LIBS_EXE = $(guilibsmt)
 _LIBS_DLL = $(conlibsmt)
 !ELSE
+DEFINES_LIBICONV = $(DEFINES_LIBICONV) /DBUILDING_DLL=1
 _CVARS = $(cvarsdll)
 _LIBS_EXE = $(guilibsdll)
 _LIBS_DLL = $(conlibsdll)
