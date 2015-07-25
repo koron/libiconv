@@ -7,9 +7,9 @@
 #  Build release version without MSVCRT:
 #  				nmake nodebug=1 nomsvcrt=1
 #
-#  Build static link library:	nmake static_libiconv=1
+#  Build static link library:	nmake nodll=1
 #  Build release version of static link library without MSVCRT:
-#  				nmake nodebug=1 nomsvcrt=1 static_libiconv=1
+#  				nmake nodebug=1 nomsvcrt=1 nodll=1
 
 OUTPUTS =	iconv.lib iconv_no_i18n.exe
 
@@ -38,7 +38,7 @@ TARGETLANG = LANG_JAPANESE
 
 !INCLUDE <Win32.Mak>
 
-!IFDEF STATIC_LIBICONV
+!IFDEF NODLL
 CCFLAGS = $(CCFLAGS) /DSTATIC_LIBICONV
 !ENDIF
 
@@ -79,7 +79,7 @@ distclean : clean
 
 OBJS_LIBICONV_DLL = lib_iconv.obj relocatable.obj localcharset.obj
 
-!IFDEF STATIC_LIBICONV
+!IFDEF NODLL
 iconv.lib : $(OBJS_LIBICONV_DLL)
 	LIB /NOLOGO /OUT:$@ $(OBJS_LIBICONV_DLL)
 !ELSE
