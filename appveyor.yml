@@ -4,15 +4,15 @@ environment:
 version: $(version)-{build}
 
 init:
-- ps: >-
-    if ($env:APPVEYOR_REPO_TAG -eq "true")
-    {
-      Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
-    }
-    else
-    {
-      Update-AppveyorBuild -Version "$env:version-$($env:appveyor_repo_commit.substring(0,7))"
-    }
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true")
+      {
+        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
+      }
+      else
+      {
+        Update-AppveyorBuild -Version "$env:version-$($env:appveyor_repo_commit.substring(0,7))"
+      }
 
 install:
   - cinst zip
@@ -25,22 +25,22 @@ before_build:
   - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%PLATFORM% /release'
 
 build_script:
-- cmd: |
-    cd msvc10
-    nmake NODEBUG=1 build
-    cd ..
+  - cmd: |
+      cd msvc10
+      nmake NODEBUG=1 build
+      cd ..
 
 test_script:
-- cmd: |
-    cd msvc10
-    nmake NODEBUG=1 check
-    cd ..
+  - cmd: |
+      cd msvc10
+      nmake NODEBUG=1 check
+      cd ..
 
 after_test:
-- cmd: |
-    cd msvc10
-    nmake NODEBUG=1 DIST_NAME=libiconv-%APPVEYOR_BUILD_VERSION%-win-%PLATFORM% dist
-    cd ..
+  - cmd: |
+      cd msvc10
+      nmake NODEBUG=1 DIST_NAME=libiconv-%APPVEYOR_BUILD_VERSION%-win-%PLATFORM% dist
+      cd ..
 
 artifacts:
   - path: msvc10\libiconv-$(APPVEYOR_BUILD_VERSION)-win-$(PLATFORM).zip
