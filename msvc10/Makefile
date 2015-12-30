@@ -11,6 +11,8 @@
 #  Build release version of static link library without MSVCRT:
 #  				nmake nodebug=1 nomsvcrt=1 nodll=1
 
+VERSION =	1.14.0
+
 OUTPUTS =	iconv.lib iconv_no_i18n.exe
 
 DEFINES =	/D_BIND_TO_CURRENT_VCLIBS_VERSION=1 \
@@ -27,6 +29,10 @@ DEFINES_LIBICONV = \
 INCLUDES =	-I. -I..\srclib
 
 CCFLAGS =	/wd 4100 /wd 4819 /wd 4127 $(INCLUDES) $(DEFINES)
+
+DIST_NAME =	libiconv-$(VERSION)-win
+DIST_DIR =	$(DIST_NAME)
+DIST_ZIP =	$(DIST_NAME).zip
 
 ############################################################################
 # WINDOWS BUILD SETTINGS.
@@ -70,8 +76,10 @@ clean :
 distclean : clean
 	-DEL /F tags
 	-DEL /F tmp-*.TXT
+	-DEL /F /Q $(DIST_ZIP)
+	-RD /S /Q $(DIST_DIR)
 
-.PHONY : build tags check clean distclean test $(TESTS)
+.PHONY : build tags check clean distclean test $(TESTS) dist
 
 ############################################################################
 
@@ -428,3 +436,25 @@ test7 :
 test8 : test-shiftseq.exe test-to-wchar.exe
 	test-shiftseq
 	test-to-wchar
+
+############################################################################
+# DISTRIBUTIONS
+
+dist : $(DIST_ZIP)
+
+$(DIST_DIR) : build
+	MKDIR $(DIST_DIR)
+	MKDIR $(DIST_DIR)\bin
+	MKDIR $(DIST_DIR)\include
+	MKDIR $(DIST_DIR)\lib
+	COPY README-dist.txt $(DIST_DIR)\README.TXT
+	COPY ..\COPYING $(DIST_DIR)\COPYING.TXT
+	COPY iconv.dll $(DIST_DIR)\bin
+	COPY iconv_no_i18n.exe $(DIST_DIR)\bin
+	COPY iconv.h $(DIST_DIR)\include
+	COPY iconv.lib $(DIST_DIR)\lib
+	COPY iconv.exp $(DIST_DIR)\lib
+
+
+$(DIST_ZIP) : $(DIST_DIR)
+	zip -r9q $(DIST_ZIP) $(DIST_DIR)

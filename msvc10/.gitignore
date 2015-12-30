@@ -4,4 +4,6 @@
 *.lib
 *.obj
 *.pdb
+*.zip
+libiconv-*/
 tags

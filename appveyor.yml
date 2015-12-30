@@ -1,0 +1,29 @@
+version: 1.14.0.{build}
+
+platform:
+  - x86
+  - x64
+
+install:
+  - cinst zip
+
+before_build:
+  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%PLATFORM% /release'
+
+build_script:
+  - cd msvc10
+  - nmake NODEBUG=1 build
+  - cd ..
+
+test_script:
+  - cd msvc10
+  - nmake NODEBUG=1 check
+  - cd ..
+
+after_test:
+  - cd msvc10
+  - nmake NODEBUG=1 DIST_NAME=libiconv-%APPVEYOR_BUILD_VERSION%-win-%PLATFORM% dist
+  - cd ..
+
+artifacts:
+  - path: msvc10\libiconv-$(APPVEYOR_BUILD_VERSION)-win-$(PLATFORM).zip
