@@ -1,4 +1,7 @@
-version: 1.14.0.{build}
+environment:
+  version: 1.14.0
+
+version: $(version)-$(APPVEYOR_REPO_COMMIT)
 
 platform:
   - x86
@@ -27,3 +30,11 @@ after_test:
 
 artifacts:
   - path: msvc10\libiconv-$(APPVEYOR_BUILD_VERSION)-win-$(PLATFORM).zip
+
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: hYDUOyVhrTijNYMOmrMfKWuXZuaar5Tk1TSbtzBtIQ0tNpxP087Ou69qhpzpVDis
+  draft: true
+  on:
+    appveyor_repo_tag: true
