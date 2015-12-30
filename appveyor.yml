@@ -1,7 +1,8 @@
 environment:
   version: 1.14.0
 
-version: $(version)-$(APPVEYOR_REPO_COMMIT)
+init:
+  - ps: Update-AppveyorBuild -Version "$env:version-$($env:appveyor_repo_commit.substring(0,7))"
 
 platform:
   - x86

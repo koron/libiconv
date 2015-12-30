@@ -455,6 +455,5 @@ $(DIST_DIR) : build
 	COPY iconv.lib $(DIST_DIR)\lib
 	COPY iconv.exp $(DIST_DIR)\lib
 
-
 $(DIST_ZIP) : $(DIST_DIR)
 	zip -r9q $(DIST_ZIP) $(DIST_DIR)
