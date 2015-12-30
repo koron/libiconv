@@ -4,9 +4,12 @@ environment:
 version: $(version)-{build}
 
 init:
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true") {
+  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true")
+  - ps: {
   - ps:   Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
-  - ps: } else {
+  - ps: }
+  - ps: else
+  - ps: {
   - ps:   Update-AppveyorBuild -Version "$env:version-$($env:appveyor_repo_commit.substring(0,7))"
   - ps: }
 
