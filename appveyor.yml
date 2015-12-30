@@ -8,7 +8,9 @@ before_build:
 build_script:
   - cd msvc10
   - nmake NODEBUG=1 build
+  - cd ..
 
 test_script:
   - cd msvc10
   - nmake NODEBUG=1 test
+  - cd ..
