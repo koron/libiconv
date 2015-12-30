@@ -11,7 +11,7 @@
 #  Build release version of static link library without MSVCRT:
 #  				nmake nodebug=1 nomsvcrt=1 nodll=1
 
-VERSION =	1.14.0a
+VERSION =	1.14.0
 
 OUTPUTS =	iconv.lib iconv_no_i18n.exe
 
