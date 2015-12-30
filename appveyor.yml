@@ -1,3 +1,5 @@
+version: 1.14.0.{build}
+
 platform:
   - x86
   - x64
@@ -12,5 +14,12 @@ build_script:
 
 test_script:
   - cd msvc10
-  - nmake NODEBUG=1 test
+  - nmake NODEBUG=1 check
   - cd ..
+
+artifacts:
+  - path: msvc10\iconv.dll
+  - path: msvc10\iconv.exp
+  - path: msvc10\iconv.h
+  - path: msvc10\iconv.lib
+  - path: msvc10\iconv_no_i18n.exe
