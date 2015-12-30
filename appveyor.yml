@@ -17,7 +17,12 @@ test_script:
   - nmake NODEBUG=1 check
   - cd ..
 
+after_test:
+  - cd msvc10
+  - nmake NODEBUG=1 DIST_NAME=libiconv-%APPVEYOR_BUILD_VERSION%-win-%PLATFORM% dist
+
 artifacts:
+  - path: msvc10\libiconv-%APPVEYOR_BUILD_VERSION%-win-%PLATFORM%.zip
   - path: msvc10\iconv.dll
   - path: msvc10\iconv.exp
   - path: msvc10\iconv.h
