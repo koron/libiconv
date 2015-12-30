@@ -26,9 +26,4 @@ after_test:
   - cd ..
 
 artifacts:
-  - path: msvc10\libiconv-%APPVEYOR_BUILD_VERSION%-win-%PLATFORM%.zip
-  - path: msvc10\iconv.dll
-  - path: msvc10\iconv.exp
-  - path: msvc10\iconv.h
-  - path: msvc10\iconv.lib
-  - path: msvc10\iconv_no_i18n.exe
+  - path: msvc10\libiconv-$(APPVEYOR_BUILD_VERSION)-win-$(PLATFORM).zip
