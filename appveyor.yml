@@ -4,21 +4,22 @@ environment:
 version: $(version)-{build}
 
 init:
-  - ps: if ($env:APPVEYOR_REPO_TAG -eq "true")
-  - ps: {
-  - ps:   Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
-  - ps: }
-  - ps: else
-  - ps: {
-  - ps:   Update-AppveyorBuild -Version "$env:version-$($env:appveyor_repo_commit.substring(0,7))"
-  - ps: }
+  - ps: >-
+      if ($env:APPVEYOR_REPO_TAG -eq "true")
+      {
+        Update-AppveyorBuild -Version "$env:APPVEYOR_REPO_TAG_NAME"
+      }
+      else
+      {
+        Update-AppveyorBuild -Version "$env:version-$($env:appveyor_repo_commit.substring(0,7))"
+      }
+
+install:
+  - cinst zip
 
 platform:
   - x86
   - x64
-
-install:
-  - cinst zip
 
 before_build:
   - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /%PLATFORM% /release'
