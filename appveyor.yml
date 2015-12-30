@@ -1,0 +1,11 @@
+platform:
+  - x86
+  - x64
+
+build_script:
+  - cd msvc10
+  - nmake NODEBUG=1 build
+
+test_script:
+  - cd msvc10
+  - nmake NODEBUG=1 test
