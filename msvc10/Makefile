@@ -447,6 +447,8 @@ $(DIST_DIR) : build
 	MKDIR $(DIST_DIR)\bin
 	MKDIR $(DIST_DIR)\include
 	MKDIR $(DIST_DIR)\lib
+	COPY README-dist.txt $(DIST_DIR)\README.TXT
+	COPY ..\COPYING $(DIST_DIR)\COPYING.TXT
 	COPY iconv.dll $(DIST_DIR)\bin
 	COPY iconv_no_i18n.exe $(DIST_DIR)\bin
 	COPY iconv.h $(DIST_DIR)\include
