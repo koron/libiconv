@@ -1,0 +1,57 @@
+name: Windows
+
+on: [push]
+
+jobs:
+
+  build-x64:
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: build & check
+      uses: ./.github/actions/windows-build
+      with:
+        arch: x64
+
+  dist-x64:
+    if: github.ref_type == 'tag'
+    needs: [ build-x64, build-x86 ]
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: dist
+      uses: ./.github/actions/windows-dist
+      with:
+        arch: x64
+
+  build-x86:
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: build & check
+      uses: ./.github/actions/windows-build
+      with:
+        arch: x86
+
+  dist-x86:
+    if: github.ref_type == 'tag'
+    needs: [ build-x64, build-x86 ]
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: dist
+      uses: ./.github/actions/windows-dist
+      with:
+        arch: x86
