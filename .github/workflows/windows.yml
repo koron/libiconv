@@ -1,0 +1,42 @@
+name: Windows
+
+on: [push]
+
+jobs:
+
+  build:
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: nmake build
+      shell: cmd
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        cd msvc10
+        nmake NODEBUG=1 build
+
+    - name: nmake check
+      shell: cmd
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        cd msvc10
+        nmake NODEBUG=1 check
+
+    - name: install zip command
+      uses: crazy-max/ghaction-chocolatey@v2
+      with:
+        args: install zip
+
+    - name: nmake dist
+      shell: cmd
+      run: |
+        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        cd msvc10
+        nmake NODEBUG=1 dist
+
+    - name: list zip
+      shell: cmd
+      run: dir msvc10\*.zip
