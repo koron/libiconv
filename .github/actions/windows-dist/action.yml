@@ -1,0 +1,26 @@
+name: Windows dist
+
+inputs:
+  arch:
+    type: string
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+
+  - name: install zip command
+    uses: crazy-max/ghaction-chocolatey@v2
+    with:
+      args: install zip
+
+  - name: nmake dist
+    shell: cmd
+    run: |
+      call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ inputs.arch }}
+      cd msvc10
+      nmake NODEBUG=1 dist
+
+  - name: list zip
+    shell: cmd
+    run: dir msvc10\*.zip

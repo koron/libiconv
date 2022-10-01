@@ -1,0 +1,24 @@
+name: Windows build
+
+inputs:
+  arch:
+    type: string
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+
+  - name: nmake build
+    shell: cmd
+    run: |
+      call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ inputs.arch }}
+      cd msvc10
+      nmake NODEBUG=1 build
+
+  - name: nmake check
+    shell: cmd
+    run: |
+      call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ inputs.arch }}
+      cd msvc10
+      nmake NODEBUG=1 check

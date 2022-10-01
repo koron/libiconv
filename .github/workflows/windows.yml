@@ -4,49 +4,52 @@ on: [push]
 
 jobs:
 
-  build:
+  build-x64:
     runs-on: windows-2022
-    defaults:
-      run:
-        shell: cmd
 
     steps:
 
     - uses: actions/checkout@v3
 
-    - name: nmake build
-      run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        cd msvc10
-        nmake NODEBUG=1 build
-
-    - name: nmake check
-      run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        cd msvc10
-        nmake NODEBUG=1 check
-
-  dist:
-    needs: build
-    runs-on: windows-2022
-    defaults:
-      run:
-        shell: cmd
-
-    steps:
-
-    - uses: actions/checkout@v3
-
-    - name: install zip command
-      uses: crazy-max/ghaction-chocolatey@v2
+    - name: build & check
+      uses: ./.github/actions/windows-build
       with:
-        args: install zip
+        arch: x64
 
-    - name: nmake dist
-      run: |
-        call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        cd msvc10
-        nmake NODEBUG=1 dist
+  dist-x64:
+    needs: [ build-x64, build-x86 ]
+    runs-on: windows-2022
 
-    - name: list zip
-      run: dir msvc10\*.zip
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: dist
+      uses: ./.github/actions/windows-dist
+      with:
+        arch: x64
+
+  build-x86:
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: build & check
+      uses: ./.github/actions/windows-build
+      with:
+        arch: x86
+
+  dist-x86:
+    needs: [ build-x64, build-x86 ]
+    runs-on: windows-2022
+
+    steps:
+
+    - uses: actions/checkout@v3
+
+    - name: dist
+      uses: ./.github/actions/windows-dist
+      with:
+        arch: x86
